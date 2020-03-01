@@ -19,7 +19,7 @@ parser.add_argument("langs",
 parser.add_argument("-c",
                     "--copy-to-workspace",
                     action='store_true',
-                    help="Shall we copy the created libs to the present dir?")
+                    help="Shall we copy the created libs to the present dir? (default: False)")
 parser.add_argument("-l",
                     "--lib-name",
                     type=str,
