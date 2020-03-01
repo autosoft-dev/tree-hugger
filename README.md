@@ -3,25 +3,25 @@ A light-weight, high level, universal code parser built on top of tree-sitter
 
 ## Browse the doc
 
-[What is it?](#what-is-it?)
+[What is it?](#what-is-it)
 
-[Why do I need it?](#why-do-i-need-it?)
+[Why do I need it?](#why-do-i-need-it)
 
 [Design Goals](#design-goals)
 
 [Installation](#installation)
 
-[Building the .so Files](#building-the-.so-files)
+[Building the .so Files](#building-the-so-files)
 
 -------------
 
 
 
-## What is it?
+## What is it
 
 `tree-hugger` is a light weight wrapper around the excellent [`tree-sitter`](https://github.com/tree-sitter/tree-sitter) library and it's Python binding. 
 
-## Why do I need it?
+## Why do I need it
 
 `tree-sitter` is a great library and does it's job without any problem and very very fast. But it is also pretty low-level. The Python binding makes you work with ugly looking `sexp` to run a query and get the result. It also does not support the NodeVisitor kind of features that are available in Python's native `ast` module.
 
@@ -44,7 +44,7 @@ _The installation process is tested in macOS Mojave, we have a [separate docker 
 - Install all the requirements for the library `pip install -r requirements.txt`
 - Install the library `pip install .`
 
-## Building the .so files
+## Building the so files
 
 _Please check out our Linux specific instructions [here](https://github.com/autosoft-dev/tree-sitter-docker)_
 
