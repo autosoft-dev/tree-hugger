@@ -3,15 +3,15 @@ A light-weight, high level, universal code parser built on top of tree-sitter
 
 ## Browse the doc
 
-[What is it?](#what-is-it)
+1. [What is it?](#what-is-it)
 
-[Why do I need it?](#why-do-i-need-it)
+2. [Why do I need it?](#why-do-i-need-it)
 
-[Design Goals](#design-goals)
+3. [Design Goals](#design-goals)
 
-[Installation](#installation)
+4. [Installation](#installation)
 
-[Building the .so Files](#building-the-so-files)
+5. [Building the .so Files](#building-the-so-files)
 
 -------------
 
