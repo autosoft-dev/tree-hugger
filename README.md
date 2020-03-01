@@ -56,4 +56,20 @@ Once this library is installed it gives you a command line utility to download a
 create_libs php python
 ```
 
-This command gives two options, first the choice to whether it should copy the generated lib to the prsent dir and also gives you a way to mention the name of the target .so file. Please try `create_libs -h` to check all the options.
+Here is the full usage guide of the command
+
+```
+usage: create_libs [-h] [-c] [-l LIB_NAME] langs [langs ...]
+
+positional arguments:
+  langs                 Give the name of languages for tree-sitter (php,
+                        python, go ...)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c, --copy-to-workspace
+                        Shall we copy the created libs to the present dir?
+                        (default: False)
+  -l LIB_NAME, --lib-name LIB_NAME
+                        The name of the generated .so file
+```
