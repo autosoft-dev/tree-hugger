@@ -46,6 +46,8 @@ _The installation process is tested in macOS Mojave, we have a [separate docker 
 
 ## Building the so files
 
+_Please note that building the libraries has been tested under a macOS Mojave with Apple LLVM version 10.0.1 (clang-1001.0.46.4)_
+
 _Please check out our Linux specific instructions [here](https://github.com/autosoft-dev/tree-sitter-docker)_
 
 Once this library is installed it gives you a command line utility to download and compile tree-sitter .so files with ease. As an example - 
