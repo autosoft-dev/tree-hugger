@@ -13,6 +13,8 @@ A light-weight, high level, universal code parser built on top of tree-sitter
 
 5. [Building the .so Files](#building-the-so-files)
 
+6. [A Quick Example](#a-quick-example)
+
 -------------
 
 
@@ -32,7 +34,7 @@ At [CodistAI](https://codist-ai.com) we have been using `tree-sitter` for some t
 - Light-weight
 - Extendable
 - Provides easy higher-level abstrctions
-- Offers some kind of normalization across languages
+- (Should)Offer some kind of normalization across languages
 
 ## Installation
 
@@ -53,7 +55,7 @@ _Please check out our Linux specific instructions [here](https://github.com/auto
 Once this library is installed it gives you a command line utility to download and compile tree-sitter .so files with ease. As an example - 
 
 ```
-create_libs php python
+create_libs python
 ```
 
 Here is the full usage guide of the command
@@ -73,3 +75,60 @@ optional arguments:
   -l LIB_NAME, --lib-name LIB_NAME
                         The name of the generated .so file
 ```
+
+## A Quick Example
+
+First run the above command to generate the libraries. 
+
+In our settings we just use the `-c` flag to copy the generated `tree-sitter` library's `.so` file to our workspace.
+And once copied, we place it under a directory called `tslibs` (It is in the .gitignore).
+
+Another thing that we need before we can analyze any code file is an yaml with queries. We have suuplied one example query file
+under `queries` directory. 
+
+*Please note that, you can set up two environment variables `QUERY_FILE_PATH` and `TS_LIB_PATH` for the query file path and 
+tree-sitter lib path and then the libary will use them automatically. Otherwise, as an alternative, you can pass it when creating any `*Parser` object*
+
+Assuming that you have the necessary environment variable setup. The following line of code will create a `PythonParser` object
+
+```python
+from tree_hugger.core import PythonParser
+
+pp = PythonParser()
+```
+
+And then you can pass in any Python file that you want to analyze, like so :
+
+```python
+pp.parse_file("tests/assets/file_with_different_functions.py")
+Out[3]: True
+```
+
+`parse_file` returns `True` if success
+
+And then you are free to use the methods exposed by that particular Parser object. As an example - 
+
+```python
+pp.get_all_function_names()
+Out[4]:
+['first_child',
+ 'second_child',
+ 'say_whee',
+ 'wrapper',
+ 'my_decorator',
+ 'parent']
+```
+
+OR
+
+```python
+pp.get_all_function_docstrings()
+Out[5]:
+{'parent': '"""This is the parent function\n    \n    There are other lines in the doc string\n    This is the third line\n\n    And this is the fourth\n    """',
+ 'first_child': "'''\n        This is first child\n        '''",
+ 'second_child': '"""\n        This is second child\n        """',
+ 'my_decorator': '"""\n    Outer decorator function\n    """',
+ 'say_whee': '"""\n    Hellooooooooo\n\n    This is a function with decorators\n    """'}
+ ```
+
+ *(Notice that, in the last call, it only returns the functions which has a docstring)*
