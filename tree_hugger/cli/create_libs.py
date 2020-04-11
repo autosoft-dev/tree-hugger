@@ -7,6 +7,8 @@ import shutil
 import pygit2
 from tree_sitter import Language
 
+import tree_hugger.setup_logging
+
 
 REPO_PREFIX = 'https://github.com/tree-sitter/tree-sitter-'
 TEMP_DOWNLOAD_PATH = "/tmp/tree-sitter-repos"
@@ -27,7 +29,6 @@ parser.add_argument("-l",
                     required=False,
                     help="The name of the generated .so file")
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
 
 
 repo_path = lambda x:  f"{TEMP_DOWNLOAD_PATH}/{x}"

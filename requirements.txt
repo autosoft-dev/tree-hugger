@@ -1,2 +1,4 @@
 tree-sitter==0.1.0
 pygit2==0.28.2
+pytest==5.4.1
+PyYAML==5.3.1

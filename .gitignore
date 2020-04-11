@@ -130,3 +130,13 @@ dmypy.json
 
 # VSCode related
 .vscode/
+
+# VSCode workspace
+
+*.code-workspace
+
+# For storing tree-sitter libs
+
+tslibs/
+
+.envrc
