@@ -144,7 +144,7 @@ Out[5]:
 
  * Write more documentation
 
- * Start other languages
+ * Write *Parser class for other languages
 
 | Languages        | Done           | Author  |
 | ------------- |:-------------:| -----:|
