@@ -15,6 +15,8 @@ A light-weight, high level, universal code parser built on top of tree-sitter
 
 6. [A Quick Example](#a-quick-example)
 
+7. [Roadmap](#roadmap)
+
 -------------
 
 
@@ -132,3 +134,22 @@ Out[5]:
  ```
 
  *(Notice that, in the last call, it only returns the functions which has a docstring)*
+
+
+ ## Roadmap
+
+ * Finish PythonParser
+
+ * Create pypi packages and make it installable via pip
+
+ * Write more documentation
+
+ * Start other languages
+
+ |  Languages  |  Finsihed  |
+ |__________________|____________|
+ |   Python    |     20%    |
+ |   PHP       |     0%     |
+ |   Java      |     0%     |
+ |   JavaScript|     0%     |
+ |   C++       |     0%     |
