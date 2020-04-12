@@ -146,10 +146,9 @@ Out[5]:
 
  * Start other languages
 
- |  Languages  |  Finsihed  |
- |__________________|____________|
- |   Python    |     20%    |
- |   PHP       |     0%     |
- |   Java      |     0%     |
- |   JavaScript|     0%     |
- |   C++       |     0%     |
+| Languages        | Done           | Author  |
+| ------------- |:-------------:| -----:|
+| Python     | 20% | Shubhadeep |
+| PHP      | 0%      |   NULL |
+| Java | 0%      |    NULL |
+| JavaScript | 0%      | NULL | 
