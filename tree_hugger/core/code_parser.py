@@ -67,3 +67,10 @@ class BaseParser(object):
     
     def sexp(self):
         return self.tree.root_node.sexp()
+    
+    def reload_queries(self, query_file_path: str=None):
+        if os.getenv("QUERY_FILE_PATH") is not None and query_file_path is None:
+            query_file_path =  os.getenv("QUERY_FILE_PATH")
+        
+        self.qclass = Query(query_file_path)
+        self.QUERIES = self.qclass['python_quaries']

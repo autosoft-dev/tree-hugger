@@ -71,3 +71,11 @@ python_quaries:
             parameters: (parameters) @func.params
         )
         "
+    all_function_bodies:
+        "
+        (
+            function_definition
+            name: (identifier) @function.name
+            body: (block) @function.code
+        )
+        "

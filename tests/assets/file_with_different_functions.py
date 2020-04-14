@@ -12,24 +12,20 @@ Hoooooooooo
 """
 
 
-def parent(num):
-    """This is the parent function
-    
-    There are other lines in the doc string
-    This is the third line
-
-    And this is the fourth
-    """
+def parent(num) :
     def first_child():
-        '''
+        """
         This is first child
-        '''
+        """
         return "Hi, I am Emma"
 
     def second_child():
         """
         This is second child
         """
+        for i in range(10):
+            print(i)
+
         return "Call me Liam"
 
     if num == 1:

@@ -7,6 +7,9 @@ from tree_sitter import Tree, Node
 from tree_hugger.core.code_parser import BaseParser, match_from_span
 import tree_hugger.setup_logging
 
+TRIPPLE_QUOTE = '"""'
+TRIPPLE_SINGLE_QUOTE = "'''"
+
 
 class PythonParser(BaseParser):
     """
@@ -116,4 +119,56 @@ class PythonParser(BaseParser):
                 ret_struct[current_class][current_method] = self._strip_py_doc_string(match_from_span(
                                                                                       tpl[0], self.splitted_code
                                                                                       ), strip_quotes)
+        return ret_struct
+    
+    def get_all_function_bodies(self, strip_docstr: bool=False) -> Dict:
+        """
+        Returns a dict where function names are the key and the whole function code are the values
+
+        Excludes any methods, i.e., functions defined inside a class.
+
+        Optional argugmet "strip_docstr" gives the choice whether the docstring should
+        be returned as a part of the function body or separately.
+        """
+        function_names = self.get_all_function_names()
+        func_and_params = self.function_names_with_params()
+        func_and_docstr = self.get_all_function_docstrings()
+        captures = self._run_query_and_get_captures('all_function_bodies', self.root_node)
+        ret_struct = {}
+        for i in range(0, len(captures), 2):
+            func_name = match_from_span(captures[i][0], self.splitted_code)
+            if func_name in function_names:
+                ret_struct[func_name] = match_from_span(captures[i+1][0], self.splitted_code)
+        
+        if strip_docstr:
+            for k, v in ret_struct.items():
+                first_quote_pos = -1
+                # @TODO - Does not cover numpy style docstrings.
+                first_quote_pos = v.find(TRIPPLE_QUOTE) if v.startswith(TRIPPLE_QUOTE) else v.find(TRIPPLE_SINGLE_QUOTE)
+                if first_quote_pos != -1:
+                    next_quote_pos = v.find(TRIPPLE_QUOTE, first_quote_pos+1) if v.startswith(TRIPPLE_QUOTE) else v.find(TRIPPLE_SINGLE_QUOTE, first_quote_pos+1)
+                    next_quote_pos = next_quote_pos + 3
+                    ret_struct[k] = (f"def {k}{func_and_params[k]}:{v[next_quote_pos:]}", func_and_docstr[k])
+                else:
+                    ret_struct[k] = (f"def {k}{func_and_params[k]}:\n    {v}", "")
+        else:
+            for k, v in ret_struct.items():
+                ret_struct[k] = f"def {k}{func_and_params[k]}:\n    {v}"
+        return ret_struct
+    
+    def function_names_with_params(self, split_params_in_list: bool=False):
+        function_names = self.get_all_function_names()
+        captures = self._run_query_and_get_captures('all_function_names_and_params', self.root_node)
+        ret_struct = {}
+
+        for i in range(0, len(captures), 2):
+            func_name = match_from_span(captures[i][0], self.splitted_code)
+            if func_name in function_names:
+                params = match_from_span(captures[i+1][0], self.splitted_code)
+                if split_params_in_list:
+                    if params.startswith("(") and params.endswith(")"):
+                        params = params[1:-1]
+                        params = params.split(",")
+                ret_struct[func_name] = params
+        
         return ret_struct

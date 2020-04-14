@@ -146,7 +146,7 @@ Out[5]:
 
  * Write *Parser class for other languages
 
-| Languages        | Done           | Author  |
+| Languages        | Status-Finished           | Author  |
 | ------------- |:-------------:| -----:|
 | Python     | 20% | Shubhadeep |
 | PHP      | 0%      |   NULL |
