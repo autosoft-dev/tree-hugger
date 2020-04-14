@@ -148,7 +148,7 @@ Out[5]:
 
 | Languages        | Status-Finished           | Author  |
 | ------------- |:-------------:| -----:|
-| Python     | 20% | Shubhadeep |
+| Python     | 30% | Shubhadeep |
 | PHP      | 0%      |   NULL |
 | Java | 0%      |    NULL |
 | JavaScript | 0%      | NULL | 
