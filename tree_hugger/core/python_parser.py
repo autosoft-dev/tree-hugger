@@ -9,6 +9,13 @@ import tree_hugger.setup_logging
 
 TRIPPLE_QUOTE = '"""'
 TRIPPLE_SINGLE_QUOTE = "'''"
+TRIPPLE_QUOTE_NUMPY_STYLE = 'r"""'
+TRIPPLE_SINGLE_QUOTE_NUMPY_STYLE = "r'''"
+
+starts_with_tripple_quote = lambda x: x.startswith(TRIPPLE_QUOTE)
+starts_with_tripple_single_quote = lambda x: x.startswith(TRIPPLE_SINGLE_QUOTE)
+starts_with_numpy_style_tripple_quote = lambda x: x.startswith(TRIPPLE_QUOTE_NUMPY_STYLE)
+starts_with_numpy_style_tripple_single_quote = lambda x: x.startswith(TRIPPLE_SINGLE_QUOTE_NUMPY_STYLE)
 
 
 class PythonParser(BaseParser):
@@ -21,14 +28,14 @@ class PythonParser(BaseParser):
     
     def _strip_py_doc_string(self, dt: str, strip_quotes: bool) -> str:
         try:
-            if dt.startswith('"""'):
+            if starts_with_tripple_quote(dt):
                 regex = r"\"{3}[\s\S]*?\"{3}"
-            elif dt.startswith("'''"):
+            elif starts_with_tripple_single_quote(dt):
                 regex = r"\'{3}[\s\S]*?\'{3}"
-            elif dt.startswith('r"""'):  # For Spinhx (numpy) style docstring with \ escapes
+            elif starts_with_numpy_style_tripple_quote(dt):  # For Spinhx (numpy) style docstring with \ escapes
                 # Check this - https://stackoverflow.com/questions/46543194/does-r-stand-for-something-in-sphinx
                 regex = r"r\"{3}[\s\S]*?\"{3}"
-            elif dt.startswith("r'''"):  # For Spinhx (numpy) style docstring with \ escapes
+            elif starts_with_numpy_style_tripple_single_quote(dt):  # For Spinhx (numpy) style docstring with \ escapes
                 regex = r"r\'{3}[\s\S]*?\'{3}"
             if regex is None:
                 logging.info(f"not a docstring {dt}")
@@ -143,8 +150,9 @@ class PythonParser(BaseParser):
         if strip_docstr:
             for k, v in ret_struct.items():
                 first_quote_pos = -1
-                # @TODO - Does not cover numpy style docstrings.
-                first_quote_pos = v.find(TRIPPLE_QUOTE) if v.startswith(TRIPPLE_QUOTE) else v.find(TRIPPLE_SINGLE_QUOTE)
+                first_quote_pos = v.find(TRIPPLE_QUOTE) if starts_with_tripple_quote(v) else v.find(TRIPPLE_SINGLE_QUOTE)
+                if first_quote_pos == -1:
+                    first_quote_pos = v.find(TRIPPLE_QUOTE_NUMPY_STYLE) if starts_with_numpy_style_tripple_quote(v) else v.find(TRIPPLE_SINGLE_QUOTE_NUMPY_STYLE)
                 if first_quote_pos != -1:
                     next_quote_pos = v.find(TRIPPLE_QUOTE, first_quote_pos+1) if v.startswith(TRIPPLE_QUOTE) else v.find(TRIPPLE_SINGLE_QUOTE, first_quote_pos+1)
                     next_quote_pos = next_quote_pos + 3
