@@ -57,7 +57,7 @@ class BaseParser(object):
         """
         if not Path(file_path).exists() or not Path(file_path).is_file():
             raise SourceFileNotFoundError(f"Source file {file_path} not found")
-        with open(file_path) as f:
+        with open(file_path, encoding='utf-8') as f:
             blob = f.read()
         self.raw_code = blob
         self.splitted_code = blob.split("\n")
