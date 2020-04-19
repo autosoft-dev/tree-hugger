@@ -169,7 +169,7 @@ class PythonParser(BaseParser):
                     # else:
                     #     ret_struct[k] = (f"def {k}{func_and_params[k]}:\n    {v}", "")
                 else:
-                    ret_struct[k] = f"def {k}{func_and_params[k]}:\n    {v}"
+                    ret_struct[k] = (f"def {k}{func_and_params[k]}:\n    {v}", "")
         else:
             for k, v in pp.items():
                 ret_struct[k] = f"def {k}{func_and_params[k]}:\n    {v}"
