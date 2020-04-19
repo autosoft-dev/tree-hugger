@@ -157,8 +157,11 @@ class PythonParser(BaseParser):
                     first_quote_pos = v.find(TRIPPLE_QUOTE) if starts_with_tripple_quote(v) else v.find(TRIPPLE_SINGLE_QUOTE)
                     if first_quote_pos == -1:
                         first_quote_pos = v.find(TRIPPLE_QUOTE_NUMPY_STYLE) if starts_with_numpy_style_tripple_quote(v) else v.find(TRIPPLE_SINGLE_QUOTE_NUMPY_STYLE)
+                        first_quote_pos += 4
                     if first_quote_pos != -1:
                         next_quote_pos = v.find(TRIPPLE_QUOTE, first_quote_pos+1) if v.startswith(TRIPPLE_QUOTE) else v.find(TRIPPLE_SINGLE_QUOTE, first_quote_pos+1)
+                        if next_quote_pos == -1:
+                            next_quote_pos = v.find(TRIPPLE_QUOTE, first_quote_pos+1) if v.startswith(TRIPPLE_QUOTE_NUMPY_STYLE) else v.find(TRIPPLE_SINGLE_QUOTE, first_quote_pos+1)
                         next_quote_pos = next_quote_pos + 3
                         ret_struct[k] = (f"def {k}{func_and_params[k]}:{v[next_quote_pos:]}", func_and_docstr[k])
                     else:
