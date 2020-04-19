@@ -168,6 +168,8 @@ class PythonParser(BaseParser):
                     #     ret_struct[k] = (f"def {k}{func_and_params[k]}:{v[next_quote_pos:]}", func_and_docstr[k])
                     # else:
                     #     ret_struct[k] = (f"def {k}{func_and_params[k]}:\n    {v}", "")
+                else:
+                    ret_struct[k] = f"def {k}{func_and_params[k]}:\n    {v}"
         else:
             for k, v in pp.items():
                 ret_struct[k] = f"def {k}{func_and_params[k]}:\n    {v}"
