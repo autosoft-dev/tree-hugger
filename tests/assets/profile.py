@@ -29,20 +29,35 @@ from babel.util import set, wraptext, LOCALTZ
 __all__ = ['read_po', 'write_po']
 __docformat__ = 'restructuredtext en'
 
-def unescape(string):
-    r"""Reverse `escape` the given string.
 
-    >>> print unescape('"Say:\\n  \\"hello, world!\\"\\n"')
+def denormalize(string):
+    r"""Reverse the normalization done by the `normalize` function.
+
+    >>> print denormalize(r'''""
+    ... "Say:\n"
+    ... "  \"hello, world!\"\n"''')
     Say:
       "hello, world!"
     <BLANKLINE>
 
-    :param string: the string to unescape
-    :return: the unescaped string
-    :rtype: `str` or `unicode`
+    >>> print denormalize(r'''""
+    ... "Say:\n"
+    ... "  \"Lorem ipsum dolor sit "
+    ... "amet, consectetur adipisicing"
+    ... " elit, \"\n"''')
+    Say:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, "
+    <BLANKLINE>
+
+    :param string: the string to denormalize
+    :return: the denormalized string
+    :rtype: `unicode` or `str`
     """
-    return string[1:-1].replace('\\\\', '\\') \
-                       .replace('\\t', '\t') \
-                       .replace('\\r', '\r') \
-                       .replace('\\n', '\n') \
-                       .replace('\\"', '\"')
+    if string.startswith('""'):
+        lines = []
+        for line in string.splitlines()[1:]:
+            lines.append(unescape(line))
+        return ''.join(lines)
+    else:
+        return unescape(string)
+
