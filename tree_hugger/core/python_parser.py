@@ -140,25 +140,29 @@ class PythonParser(BaseParser):
         function_names = self.get_all_function_names()
         func_and_params = self.function_names_with_params()
         func_and_docstr = self.get_all_function_docstrings()
+        
         captures = self._run_query_and_get_captures('all_function_bodies', self.root_node)
+        
         ret_struct = {}
+        pp = {}
         for i in range(0, len(captures), 2):
             func_name = match_from_span(captures[i][0], self.splitted_code)
             if func_name in function_names:
-                ret_struct[func_name] = match_from_span(captures[i+1][0], self.splitted_code)
+                pp[func_name] = match_from_span(captures[i+1][0], self.splitted_code)
         
         if strip_docstr:
-            for k, v in ret_struct.items():
-                first_quote_pos = -1
-                first_quote_pos = v.find(TRIPPLE_QUOTE) if starts_with_tripple_quote(v) else v.find(TRIPPLE_SINGLE_QUOTE)
-                if first_quote_pos == -1:
-                    first_quote_pos = v.find(TRIPPLE_QUOTE_NUMPY_STYLE) if starts_with_numpy_style_tripple_quote(v) else v.find(TRIPPLE_SINGLE_QUOTE_NUMPY_STYLE)
-                if first_quote_pos != -1:
-                    next_quote_pos = v.find(TRIPPLE_QUOTE, first_quote_pos+1) if v.startswith(TRIPPLE_QUOTE) else v.find(TRIPPLE_SINGLE_QUOTE, first_quote_pos+1)
-                    next_quote_pos = next_quote_pos + 3
-                    ret_struct[k] = (f"def {k}{func_and_params[k]}:{v[next_quote_pos:]}", func_and_docstr[k])
-                else:
-                    ret_struct[k] = (f"def {k}{func_and_params[k]}:\n    {v}", "")
+            for k, v in pp.items():
+                if func_and_docstr.get(k) is not None:
+                    first_quote_pos = -1
+                    first_quote_pos = v.find(TRIPPLE_QUOTE) if starts_with_tripple_quote(v) else v.find(TRIPPLE_SINGLE_QUOTE)
+                    if first_quote_pos == -1:
+                        first_quote_pos = v.find(TRIPPLE_QUOTE_NUMPY_STYLE) if starts_with_numpy_style_tripple_quote(v) else v.find(TRIPPLE_SINGLE_QUOTE_NUMPY_STYLE)
+                    if first_quote_pos != -1:
+                        next_quote_pos = v.find(TRIPPLE_QUOTE, first_quote_pos+1) if v.startswith(TRIPPLE_QUOTE) else v.find(TRIPPLE_SINGLE_QUOTE, first_quote_pos+1)
+                        next_quote_pos = next_quote_pos + 3
+                        ret_struct[k] = (f"def {k}{func_and_params[k]}:{v[next_quote_pos:]}", func_and_docstr[k])
+                    else:
+                        ret_struct[k] = (f"def {k}{func_and_params[k]}:\n    {v}", "")
         else:
             for k, v in ret_struct.items():
                 ret_struct[k] = f"def {k}{func_and_params[k]}:\n    {v}"

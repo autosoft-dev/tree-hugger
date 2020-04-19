@@ -69,6 +69,13 @@ class BaseParser(object):
         return self.tree.root_node.sexp()
     
     def reload_queries(self, query_file_path: str=None):
+        """
+        Reloads the query file and the internal data structure.
+
+        This is a temporary method and it should not be a part of the API. 
+        mainly to dynamically reload the queries while in development for 
+        IPython console
+        """
         if os.getenv("QUERY_FILE_PATH") is not None and query_file_path is None:
             query_file_path =  os.getenv("QUERY_FILE_PATH")
         
