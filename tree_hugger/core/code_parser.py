@@ -25,7 +25,7 @@ class BaseParser(object):
     Base parser exposes the common interface that we extend per language
     """
 
-    def __init__(self, language: str, library_loc: str=None, query_file_path: str=None):
+    def __init__(self, language: str, query_class_name: str, library_loc: str=None, query_file_path: str=None):
         if os.getenv("TS_LIB_PATH") is not None and library_loc is None:
             library_loc = os.getenv("TS_LIB_PATH")
         if not Path(library_loc).exists() or not Path(library_loc).is_file():
@@ -38,7 +38,7 @@ class BaseParser(object):
         self.parser = Parser()
         self.parser.set_language(self.language)
         self.qclass = Query(query_file_path)
-        self.QUERIES = self.qclass['python_quaries']
+        self.QUERIES = self.qclass[query_class_name]
     
     def _run_query_and_get_captures(self, q_name: str, root_node:  Node) -> List:
         """

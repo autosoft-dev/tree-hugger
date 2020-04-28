@@ -44,7 +44,34 @@ python_quaries:
                     name: (identifier) @method.name
                 )
             )
+        )
+        ( class_definition
+            body: (
+                block(
+                    decorated_definition
+                    definition: (
+                        function_definition
+                        name: (identifier) @decorated.name
+                    )
+                )
+            )
         )        
+        ( class_definition
+            body: (
+                block(
+                    decorated_definition
+                    definition: (
+                        function_definition
+                        body: (
+                            block(
+                                function_definition
+                                name: (identifier) @decorated.inner.name 
+                            )
+                        )
+                    )
+                )
+            )
+        )
         "
     all_class_method_docstrings:
         "
