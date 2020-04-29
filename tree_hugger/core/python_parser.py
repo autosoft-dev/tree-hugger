@@ -17,6 +17,8 @@ starts_with_tripple_single_quote = lambda x: x.startswith(TRIPPLE_SINGLE_QUOTE)
 starts_with_numpy_style_tripple_quote = lambda x: x.startswith(TRIPPLE_QUOTE_NUMPY_STYLE)
 starts_with_numpy_style_tripple_single_quote = lambda x: x.startswith(TRIPPLE_SINGLE_QUOTE_NUMPY_STYLE)
 
+regex = r"([ ]{2,})"
+
 
 class PythonParser(BaseParser):
     """
@@ -47,6 +49,14 @@ class PythonParser(BaseParser):
                 return return_dt.replace('"""', "").rstrip().lstrip() if return_dt.find('"""') != -1 else return_dt.replace("'''", "").rstrip().lstrip()
         except UnboundLocalError:
             return ""
+    
+    def _outer_indent(self, code):
+        spaces_arr = []
+        matches = re.finditer(regex, code)
+        for _, match in enumerate(matches, start=1):
+            spaces_arr.append(len(match.group(0)))
+        return min(spaces_arr)
+
     
     def get_all_class_method_names(self) -> List:
         """
@@ -152,14 +162,18 @@ class PythonParser(BaseParser):
         
         if strip_docstr:
             for k, v in pp.items():
-                if func_and_docstr.get(k) is not None:
+                if func_and_docstr.get(k) is not None and func_and_docstr.get(k) is not '':
                     code = v.replace(func_and_docstr[k], "")
                     ret_struct[k] = (f"def {k}{func_and_params[k]}:{code}", func_and_docstr[k])
                 else:
-                    ret_struct[k] = (f"def {k}{func_and_params[k]}:\n    {v}", "")
+                    outer_indent = self._outer_indent(v)
+                    spaces = " ".join([''] * (outer_indent + 1))
+                    ret_struct[k] = (f"def {k}{func_and_params[k]}:\n{spaces}{v}", "")
         else:
             for k, v in pp.items():
-                ret_struct[k] = f"def {k}{func_and_params[k]}:\n    {v}"
+                outer_indent = self._outer_indent(v)
+                spaces = " ".join([''] * (outer_indent + 1))
+                ret_struct[k] = f"def {k}{func_and_params[k]}:\n{spaces}{v}"
         return ret_struct
     
     def function_names_with_params(self, split_params_in_list: bool=False):
