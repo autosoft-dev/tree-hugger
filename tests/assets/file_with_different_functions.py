@@ -74,37 +74,46 @@
 #         return x * x
 
 
-def delete_comps_that_improve_ELBO(Data, model, Korig=0, LP=None,
-                                   SS=None, ELBO=None, **kwargs):
-  if LP is None:
-    LP = model.calc_local_params(Data)
-  if SS is None:
-    SS = model.get_global_suff_stats(Data, LP, doPrecompEntropy=True)
-  if ELBO is None:
-    ELBO = model.calc_evidence(SS=SS)
+# def delete_comps_that_improve_ELBO(Data, model, Korig=0, LP=None,
+#                                    SS=None, ELBO=None, **kwargs):
+#   if LP is None:
+#     LP = model.calc_local_params(Data)
+#   if SS is None:
+#     SS = model.get_global_suff_stats(Data, LP, doPrecompEntropy=True)
+#   if ELBO is None:
+#     ELBO = model.calc_evidence(SS=SS)
 
-  ''' Iteratively attempt deleting comps Kall, Kall-1, Kall-2, ... Korig
-        going in this order makes it easiest to remove components
-  '''
-  K = SS.K
-  for k in reversed(range(Korig, K)):
-    rmodel = model.copy()
-    rSS = SS.copy()
-    rSS.removeComp(k)
-    rmodel.obsModel.K = rSS.K
-    rmodel.allocModel.update_global_params(rSS, mergeCompB=k)
-    del rmodel.obsModel.comp[k]
+#   ''' Iteratively attempt deleting comps Kall, Kall-1, Kall-2, ... Korig
+#         going in this order makes it easiest to remove components
+#   '''
+#   K = SS.K
+#   for k in reversed(range(Korig, K)):
+#     rmodel = model.copy()
+#     rSS = SS.copy()
+#     rSS.removeComp(k)
+#     rmodel.obsModel.K = rSS.K
+#     rmodel.allocModel.update_global_params(rSS, mergeCompB=k)
+#     del rmodel.obsModel.comp[k]
 
-    rLP = rmodel.calc_local_params(Data)
-    rSS = rmodel.get_global_suff_stats(Data, rLP, doPrecompEntropy=True)
-    rELBO = rmodel.calc_evidence(SS=rSS)
+#     rLP = rmodel.calc_local_params(Data)
+#     rSS = rmodel.get_global_suff_stats(Data, rLP, doPrecompEntropy=True)
+#     rELBO = rmodel.calc_evidence(SS=rSS)
 
-    if kwargs['doVizBirth'] == 3:
-      viz_deletion_sidebyside(model, rmodel, ELBO, rELBO)
+#     if kwargs['doVizBirth'] == 3:
+#       viz_deletion_sidebyside(model, rmodel, ELBO, rELBO)
 
-    if rELBO >= ELBO:
-      SS = rSS
-      LP = rLP
-      model = rmodel
-      ELBO = rELBO      
-  return model, LP, SS, ELBO
+#     if rELBO >= ELBO:
+#       SS = rSS
+#       LP = rLP
+#       model = rmodel
+#       ELBO = rELBO      
+#   return model, LP, SS, ELBO
+
+def type_cmp(a, b):
+  # return 1 if a > b else -1 if a < b else 0
+  if a > b:
+    return 1
+  elif a < b:
+    return -1
+  else:
+    return 0

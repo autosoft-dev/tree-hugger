@@ -164,7 +164,12 @@ class PythonParser(BaseParser):
             for k, v in pp.items():
                 if func_and_docstr.get(k) is not None and func_and_docstr.get(k) is not '':
                     code = v.replace(func_and_docstr[k], "")
-                    ret_struct[k] = (f"def {k}{func_and_params[k]}:{code}", func_and_docstr[k])
+                    outer_indent = self._outer_indent(code)
+                    spaces = " ".join([''] * (outer_indent + 1))
+                    if code.startswith("\n"):
+                        ret_struct[k] = (f"def {k}{func_and_params[k]}:{code}", func_and_docstr[k])
+                    else:
+                        ret_struct[k] = (f"def {k}{func_and_params[k]}:\n{spaces}{code}", func_and_docstr[k])
                 else:
                     outer_indent = self._outer_indent(v)
                     spaces = " ".join([''] * (outer_indent + 1))
