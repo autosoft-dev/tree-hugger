@@ -57,8 +57,11 @@ class BaseParser(object):
         """
         if not Path(file_path).exists() or not Path(file_path).is_file():
             raise SourceFileNotFoundError(f"Source file {file_path} not found")
-        with open(file_path, encoding='utf-8') as f:
-            blob = f.read()
+        try:
+            with open(file_path, encoding='utf-8') as f:
+                blob = f.read()
+        except UnicodeDecodeError:
+            return False
         self.raw_code = blob
         self.splitted_code = blob.split("\n")
         self.tree :Tree = self.parser.parse(bytes(blob.encode('utf-8')))
