@@ -55,7 +55,7 @@ class PythonParser(BaseParser):
         matches = re.finditer(regex, code)
         for _, match in enumerate(matches, start=1):
             spaces_arr.append(len(match.group(0)))
-        return min(spaces_arr)
+        return min(spaces_arr) if spaces_arr else 4
 
     
     def get_all_class_method_names(self) -> List:
