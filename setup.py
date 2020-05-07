@@ -1,5 +1,5 @@
 import pathlib
-from distutils.core import setup
+from setuptools import find_packages, setup
 from tree_hugger import __version__
 
 # The directory containing this file
@@ -23,8 +23,8 @@ classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
 ],
-version="0.1.0",
-packages=['tree_hugger',],
+version="0.1.1",
+packages=find_packages(exclude=("tests",)),
 install_requires=["tree-sitter", "pygit2", "pytest", "PyYAML"],
 entry_points = {
     'console_scripts': ['create_libs=tree_hugger.cli.create_libs:main'],

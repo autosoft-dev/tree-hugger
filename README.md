@@ -40,13 +40,26 @@ At [CodistAI](https://codist-ai.com) we have been using `tree-sitter` for some t
 
 ## Installation
 
-At the moment a `pip` wheel is not available (coming soon!) so the best way to install it is to clone the library and then run the following commands (from the top level directory)
+### From pip:
+
+Just do
+```
+pip install tree-hugger==0.1.1
+```
+
+### From Source:
+
+```
+git clone https://github.com/autosoft-dev/tree-hugger.git
+
+cd tree-hugger
+
+pip install -e .
+```
 
 _The installation process is tested in macOS Mojave, we have a [separate docker binding](https://github.com/autosoft-dev/tree-sitter-docker) for compiling the libraries for Linux and soon this library will be integrated in that as well_
 
-- First install libgit2 `brew install libgit2`
-- Install all the requirements for the library `pip install -r requirements.txt`
-- Install the library `pip install .`
+_You may need to install libgit2. In case you are in mac just use `brew install libgit2`_
 
 ## Building the .so files
 
@@ -86,7 +99,7 @@ In our settings we just use the `-c` flag to copy the generated `tree-sitter` li
 And once copied, we place it under a directory called `tslibs` (It is in the .gitignore).
 
 Another thing that we need before we can analyze any code file is an yaml with queries. We have suuplied one example query file
-under `queries` directory. 
+under [**queries**](https://raw.githubusercontent.com/autosoft-dev/tree-hugger/master/queries/example_queries.yml) directory. 
 
 *Please note that, you can set up two environment variables `QUERY_FILE_PATH` and `TS_LIB_PATH` for the query file path and 
 tree-sitter lib path and then the libary will use them automatically. Otherwise, as an alternative, you can pass it when creating any `*Parser` object*
@@ -148,7 +161,7 @@ Out[5]:
 
 | Languages        | Status-Finished           | Author  |
 | ------------- |:-------------:| -----:|
-| Python     | 30% | Shubhadeep |
+| Python     | 40% | Shubhadeep |
 | PHP      | 0%      |   NULL |
 | Java | 0%      |    NULL |
 | JavaScript | 0%      | NULL | 
