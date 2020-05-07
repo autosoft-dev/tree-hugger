@@ -23,6 +23,8 @@ regex = r"([ ]{2,})"
 class PythonParser(BaseParser):
     """
     The PythonParser class, extending the BaseParser and supplying some easy-to-use API s for mining code files
+
+    @TODO - Implement a tree walker.
     """
 
     def __init__(self, library_loc: str=None, query_file_path: str=None):
@@ -182,6 +184,11 @@ class PythonParser(BaseParser):
         return ret_struct
     
     def function_names_with_params(self, split_params_in_list: bool=False):
+        """
+        Returns a dictionary with all the function names and their params
+
+        Optional argument split_params_in_list lets the params to be returned as a list
+        """
         function_names = self.get_all_function_names()
         captures = self._run_query_and_get_captures('all_function_names_and_params', self.root_node)
         ret_struct = {}
