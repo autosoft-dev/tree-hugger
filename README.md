@@ -153,7 +153,7 @@ Out[5]:
 
  * Finish PythonParser
 
- * Create pypi packages and make it installable via pip
+ * ~~Create pypi packages and make it installable via pip~~
 
  * Write more documentation
 
