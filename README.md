@@ -44,7 +44,7 @@ At [CodistAI](https://codist-ai.com) we have been using `tree-sitter` for some t
 
 Just do
 ```
-pip install tree-hugger==0.1.1
+pip install tree-hugger
 ```
 
 ### From Source:
