@@ -15,7 +15,9 @@ A light-weight, high level, universal code parser built on top of tree-sitter
 
 6. [A Quick Example](#a-quick-example)
 
-7. [Roadmap](#roadmap)
+7. [One or two words about extending](#one-or-two-words-about-extending)
+
+8. [Roadmap](#roadmap)
 
 -------------
 
@@ -149,7 +151,85 @@ Out[5]:
  *(Notice that, in the last call, it only returns the functions which has a docstring)*
 
 
- ## Roadmap
+## One or two words about extending
+
+Extending tree-hugger for other languages and/or more functionalities for the already provided ones, is easy. 
+
+You need to understand that there are two main things here.
+
+1. ### Queries: 
+Queries are s-expressions (Remember LISP?) that works on the parsed code and gives you what you want. They are a great way to fetch arbitary data from the parsed code without having to travel through it recursively. 
+Tree-hugger gives you a way to write your queries in yaml file (Check out the queries/example_queries.yaml) file to see some examples. 
+
+This file has a very simple structure. Each main section is named `<language>_queries` where `language` is the name of the language that you are writing queries on. In the case of the example file, it is `python`. 
+
+This main section  is further sub-divded into few (as many as you need, actually) sections. Each of them has the same structure. A name of a query followed by the query itself. Written as an s-expression. One example:
+
+```
+all_function_doctrings:
+        "
+        (
+            function_definition
+            name: (identifier) @function.def
+            body: (block(expression_statement(string))) @function.docstring
+        )
+        "
+```
+Of course, you have to follow yaml grammar while writing these queries. You can see a bit more about writng these queries in the documentation of tree-sitter. [Here](https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries). Although it is not very intuitive to start with. We are planning to write a detailed tutorial on this subject. 
+
+2. ### Parser Class:
+A parser class (such as PythonParser) extends from the BaseParser class. The only mandatory argument that a Parser class should pass to the parent is the `language`. This is a string. Such as `python` (remember, lower case). Although, each parser class must
+have the options to take in the path of the tree-sitter library (.so file that we are using to parse the code) and the path to the queries yaml file, in their constructor. As an example, for PythonParser - 
+
+```
+from tree_hugger.core.code_parser import BaseParser, match_from_span
+
+
+class PythonParser(BaseParser):
+  def __init__(self, library_loc: str=None, query_file_path: str=None):
+    super(PythonParser, self).__init__('python', 'python_quaries', library_loc, query_file_path)
+```
+
+As you can see, the BaseParser class needs a third (mandatory) argument, the name of the language. Each Parser class has the responsibility to pass that to the BaseParser class (as hard-coded string for the moment)
+
+The BaseParser class, in itself, does not do a lot. However, it does few things for you. 
+
+* It laods and prepares the .so file with respect to the language you just mentioned. 
+
+* It loads, parses, and prepares the query yaml file. (for the queries, we internally use an extended UserDict class. More on that later.)
+
+* It gives an API to parse a file and prepare it for query. `BaseParser.parse_file`
+
+* It also gives you another (most likely not to be exposed outside) API `_run_query_and_get_captures` which lets you run any queries and return back the matched results (if any) from the parsed tree. 
+
+If you are interested to see the example of one of the methods in the PythonParser class, to know how all of these come toghether. Here it is (Do not forget, we use those APIs once we have called `parse_file` and parsed the file) - 
+
+```
+def get_all_function_names(self) -> List:
+        """
+        Gets all function names from a file.
+
+        It excludes all the methods, i.e. functions defined inside a class
+        """
+
+        # First let us run the query. Mention the name of the query from yaml file and also pass in the root_node
+        # The root_node is already prepared for you once you had called the parse_file method beforehand
+        captures = self._run_query_and_get_captures('all_function_names', self.root_node)
+
+        # Now, with the returned captures, let's get the string representations using `match_from`span` 
+        all_funcs = set([match_from_span(n[0], self.splitted_code) for n in captures])
+
+        # This part here, uses another method from PythonParser class to get the name of all the class methods. 
+        methods = self.get_all_class_method_names()
+        all_methods = set([method_name  for key, value in methods.items() for method_name in value])
+
+        # Let's return the difference between the two sets.
+        return list(all_funcs - all_methods)
+```
+
+The function `match_from_span` is a very handy function. It is defined in the BaseParser module. It takes a span definition and returns the underlying code string from it.
+
+## Roadmap
 
  * Finish PythonParser
 
