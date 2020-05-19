@@ -16,6 +16,10 @@ A light-weight, high level, universal code parser built on top of tree-sitter
 6. [A Quick Example](#a-quick-example)
 
 7. [One or two words about extending](#one-or-two-words-about-extending)
+  
+    - [Queries](#queries)
+
+    - [Parser Class](#parser-class)
 
 8. [Roadmap](#roadmap)
 
@@ -98,7 +102,7 @@ optional arguments:
 First run the above command to generate the libraries. 
 
 In our settings we just use the `-c` flag to copy the generated `tree-sitter` library's `.so` file to our workspace.
-And once copied, we place it under a directory called `tslibs` (It is in the .gitignore).
+And once copied, we place it under a directory called `tslibs` (It is in the .gitignore). But of course, if you are using linux then this command probably won't work and you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file.
 
 Another thing that we need before we can analyze any code file is an yaml with queries. We have suuplied one example query file
 under [**queries**](https://raw.githubusercontent.com/autosoft-dev/tree-hugger/master/queries/example_queries.yml) directory. 
