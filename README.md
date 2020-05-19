@@ -25,11 +25,11 @@ A light-weight, high level, universal code parser built on top of tree-sitter
 
 ## What is it?
 
-`tree-hugger` is a light weight wrapper around the excellent [`tree-sitter`](https://github.com/tree-sitter/tree-sitter) library and it's Python binding. 
+`tree-hugger` is a light weight wrapper around the excellent [`tree-sitter`](https://github.com/tree-sitter/tree-sitter) library and it's Python binding. You can use it to create your universal code parser and then easily mine through the data. 
 
 ## Why do I need it?
 
-`tree-sitter` is a great library and does it's job without any problem and very very fast. But it is also pretty low-level. The Python binding makes you work with ugly looking `sexp` to run a query and get the result. It also does not support the NodeVisitor kind of features that are available in Python's native `ast` module.
+`tree-sitter` is a great universal code parser and does it's job without any problem and very very fast. But it is also pretty low-level. The Python binding makes you work with ugly looking `sexp` to run a query and get the result. It also does not support the NodeVisitor kind of features that are available in Python's native `ast` module.
 
 At [CodistAI](https://codist-ai.com) we have been using `tree-sitter` for some time now to create a language independent layer for our code analysis and code intelligence platform. While bulding that, we faced the pain as well. And we wrote some code to easily extend our platform to different languages. We believe some others may as well need to have the same higher level library to easily parse and gain insight about various different code files.
 
@@ -38,7 +38,7 @@ At [CodistAI](https://codist-ai.com) we have been using `tree-sitter` for some t
 - Light-weight
 - Extendable
 - Provides easy higher-level abstrctions
-- (Should)Offer some kind of normalization across languages
+- Normalization across languages (Coming soon!)
 
 ## Installation
 
@@ -159,7 +159,7 @@ You need to understand that there are two main things here.
 
 1. ### Queries: 
 Queries are s-expressions (Remember LISP?) that works on the parsed code and gives you what you want. They are a great way to fetch arbitary data from the parsed code without having to travel through it recursively. 
-Tree-hugger gives you a way to write your queries in yaml file (Check out the queries/example_queries.yaml) file to see some examples. 
+Tree-hugger gives you a way to write your queries in yaml file (Check out the [queries/example_queries.yml](queries/example_queries.yaml)) file to see some examples. 
 
 This file has a very simple structure. Each main section is named `<language>_queries` where `language` is the name of the language that you are writing queries on. In the case of the example file, it is `python`. 
 
@@ -177,6 +177,16 @@ all_function_doctrings:
 ```
 Of course, you have to follow yaml grammar while writing these queries. You can see a bit more about writng these queries in the documentation of tree-sitter. [Here](https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries). Although it is not very intuitive to start with. We are planning to write a detailed tutorial on this subject. 
 
+Some example queries, that you will find in the yaml file (and their corresponding API from the PythonParser class) - 
+
+```
+* all_function_names => get_all_function_names()
+
+* all_function_doctrings => get_all_function_docstrings()
+
+* all_class_methods => get_all_class_method_names()
+```
+
 2. ### Parser Class:
 A parser class (such as PythonParser) extends from the BaseParser class. The only mandatory argument that a Parser class should pass to the parent is the `language`. This is a string. Such as `python` (remember, lower case). Although, each parser class must
 have the options to take in the path of the tree-sitter library (.so file that we are using to parse the code) and the path to the queries yaml file, in their constructor. As an example, for PythonParser - 
@@ -192,9 +202,9 @@ class PythonParser(BaseParser):
 
 As you can see, the BaseParser class needs a third (mandatory) argument, the name of the language. Each Parser class has the responsibility to pass that to the BaseParser class (as hard-coded string for the moment)
 
-The BaseParser class, in itself, does not do a lot. However, it does few things for you. 
+The BaseParser class can do few things for you. 
 
-* It laods and prepares the .so file with respect to the language you just mentioned. 
+* It loads and prepares the .so file with respect to the language you just mentioned. 
 
 * It loads, parses, and prepares the query yaml file. (for the queries, we internally use an extended UserDict class. More on that later.)
 
@@ -241,7 +251,7 @@ The function `match_from_span` is a very handy function. It is defined in the Ba
 
 | Languages        | Status-Finished           | Author  |
 | ------------- |:-------------:| -----:|
-| Python     | 40% | Shubhadeep |
+| Python     | 40% | [Shubhadeep](https://github.com/rcshubhadeep) |
 | PHP      | 0%      |   NULL |
 | Java | 0%      |    NULL |
 | JavaScript | 0%      | NULL | 
