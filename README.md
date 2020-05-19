@@ -159,7 +159,7 @@ You need to understand that there are two main things here.
 
 1. ### Queries: 
 Queries are s-expressions (Remember LISP?) that works on the parsed code and gives you what you want. They are a great way to fetch arbitary data from the parsed code without having to travel through it recursively. 
-Tree-hugger gives you a way to write your queries in yaml file (Check out the [queries/example_queries.yml](queries/example_queries.yaml)) file to see some examples. 
+Tree-hugger gives you a way to write your queries in yaml file (Check out the [queries/example_queries.yml](queries/example_queries.yml)) file to see some examples. 
 
 This file has a very simple structure. Each main section is named `<language>_queries` where `language` is the name of the language that you are writing queries on. In the case of the example file, it is `python`. 
 
