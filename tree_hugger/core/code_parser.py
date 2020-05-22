@@ -4,7 +4,7 @@ from typing import List
 
 from tree_sitter import Node, Language, Parser, Tree
 
-from tree_hugger.exceptions import ParserLibraryNotFoundError, SourceFileNotFoundError
+from tree_hugger.exceptions import ParserLibraryNotFoundError, SourceFileNotFoundError, QueryFileNotFoundError
 from tree_hugger.core.queries import Query
 
 
@@ -28,11 +28,19 @@ class BaseParser(object):
     def __init__(self, language: str, query_class_name: str, library_loc: str=None, query_file_path: str=None):
         if os.getenv("TS_LIB_PATH") is not None and library_loc is None:
             library_loc = os.getenv("TS_LIB_PATH")
-        if not library_loc or not Path(library_loc).exists() or not Path(library_loc).is_file():
-            raise ParserLibraryNotFoundError(f"Parser library '{library_loc}' not found")
+        
+        if not library_loc:
+            raise ParserLibraryNotFoundError("Parser library path is 'None'. Please either set up the environment or call the constructor with the path")
+
+        if not Path(library_loc).exists() or not Path(library_loc).is_file():
+            raise ParserLibraryNotFoundError(f"Parser library '{library_loc}' not found. Did you set up the environement variables?")
         
         if os.getenv("QUERY_FILE_PATH") is not None and query_file_path is None:
             query_file_path =  os.getenv("QUERY_FILE_PATH")
+        
+        if not query_file_path:
+            raise QueryFileNotFoundError(f"Query file path is 'None'")
+
         
         self.language = Language(library_loc, language)
         self.parser = Parser()
