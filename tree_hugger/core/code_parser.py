@@ -28,7 +28,7 @@ class BaseParser(object):
     def __init__(self, language: str, query_class_name: str, library_loc: str=None, query_file_path: str=None):
         if os.getenv("TS_LIB_PATH") is not None and library_loc is None:
             library_loc = os.getenv("TS_LIB_PATH")
-        if not Path(library_loc).exists() or not Path(library_loc).is_file():
+        if not library_loc or not Path(library_loc).exists() or not Path(library_loc).is_file():
             raise ParserLibraryNotFoundError(f"Parser library '{library_loc}' not found")
         
         if os.getenv("QUERY_FILE_PATH") is not None and query_file_path is None:
