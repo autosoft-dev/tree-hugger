@@ -204,3 +204,27 @@ class PythonParser(BaseParser):
                 ret_struct[func_name] = params
         
         return ret_struct
+    
+    def get_all_class_names(self) -> List[str]:
+        """
+        Returns a list of all class names present in a file
+        """
+        captures = self._run_query_and_get_captures('all_class_names', self.root_node)
+        return [match_from_span(t[0], self.splitted_code) for t in captures]
+    
+    def get_all_class_docstrings(self, strip_quotes: bool=False) -> Dict[str, str]:
+        captures = self._run_query_and_get_captures("all_class_docstrings", self.root_node)
+
+        ret_struct = {}
+        for i in range(0, len(captures), 2):
+            class_name = match_from_span(captures[i][0], self.splitted_code)
+            class_body_node = captures[i+1][0]
+            if self._has_children(class_body_node):
+                cursor = class_body_node.walk()
+                if cursor.goto_first_child() and cursor.node.type == "expression_statement":
+                    if cursor.goto_first_child() and cursor.node.type == "string":
+                        class_docstr = match_from_span(cursor.node, self.splitted_code)
+                        if strip_quotes:
+                            class_docstr = self._strip_py_doc_string(class_docstr, strip_quotes)
+                        ret_struct[class_name] = class_docstr
+        return ret_struct

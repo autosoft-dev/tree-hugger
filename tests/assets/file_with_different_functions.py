@@ -57,6 +57,13 @@ def say_whee():
 
 
 class BaseClass(object):
+    """
+    This is a class docstring
+
+    Which spans multiple lines
+
+    Helloooooooooo
+    """
 
     def __init__(self, x):
         self.x = x
@@ -72,3 +79,12 @@ class BaseClass(object):
         def scan(children):
             print(children)
         return x * x
+
+
+class AnotherClass(BaseClass):
+    '''Another line of useless doc :)
+    '''
+
+    def __init__(self):
+        super(AnotherClass, self).__init__(12)
+        self.name = "AnotherClass"

@@ -26,7 +26,12 @@ python_quaries:
         (
             class_definition
             name: (identifier) @class.def
-            body: (block(expression_statement(string))) @class.docstring
+            body: (
+                    block
+                    (expression_statement
+                        (string)
+                    )
+                ) @class.docstring
         )
         "
     all_class_methods:
