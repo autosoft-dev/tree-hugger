@@ -213,6 +213,11 @@ class PythonParser(BaseParser):
         return [match_from_span(t[0], self.splitted_code) for t in captures]
     
     def get_all_class_docstrings(self, strip_quotes: bool=False) -> Dict[str, str]:
+        """
+        Returns the docstring of all classes
+
+        Optional argument strip_quotes strips the tripple quotes from both sides
+        """
         captures = self._run_query_and_get_captures("all_class_docstrings", self.root_node)
 
         ret_struct = {}
