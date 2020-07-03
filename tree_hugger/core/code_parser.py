@@ -91,7 +91,7 @@ class BaseParser(object):
             query_file_path =  os.getenv("QUERY_FILE_PATH")
         
         self.qclass = Query(query_file_path)
-        self.QUERIES = self.qclass['python_quaries']
+        self.QUERIES = self.qclass['python_queries']
     
     def _has_children(self, node: Node) -> bool:
         return len(node.children) > 0
