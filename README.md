@@ -1,6 +1,10 @@
 # tree-hugger
 A light-weight, high level, universal code parser built on top of tree-sitter
 
+## System Requirement
+
+- Python 3.6
+
 ## Browse the doc
 
 1. [What is it?](#what-is-it)
