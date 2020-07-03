@@ -140,3 +140,5 @@ dmypy.json
 tslibs/
 
 .envrc
+
+.DS_Store
