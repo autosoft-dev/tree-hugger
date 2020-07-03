@@ -24,6 +24,8 @@ class BaseParser(object):
     """
     Base parser exposes the common interface that we extend per language
     """
+    
+    DEFAULT_QUERY_FILE_PATH = str(Path("tree_hugger") / "assets" / "queries" / "queries.yml")
 
     def __init__(self, language: str, query_class_name: str, library_loc: str=None, query_file_path: str=None):
         if os.getenv("TS_LIB_PATH") is not None and library_loc is None:
@@ -39,7 +41,7 @@ class BaseParser(object):
             query_file_path =  os.getenv("QUERY_FILE_PATH")
         
         if not query_file_path:
-            raise QueryFileNotFoundError(f"Query file path is 'None'")
+            query_file_path = BaseParser.DEFAULT_QUERY_FILE_PATH
 
         
         self.language = Language(library_loc, language)
