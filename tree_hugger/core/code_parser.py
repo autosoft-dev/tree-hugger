@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from typing import List
+import pkg_resources
 
 from tree_sitter import Node, Language, Parser, Tree
 
@@ -25,7 +26,7 @@ class BaseParser(object):
     Base parser exposes the common interface that we extend per language
     """
     
-    DEFAULT_QUERY_FILE_PATH = str(Path("tree_hugger") / "assets" / "queries" / "queries.yml")
+    DEFAULT_QUERY_FILE_PATH = str(Path("assets") / "queries" / "queries.yml")
 
     def __init__(self, language: str, query_class_name: str, library_loc: str=None, query_file_path: str=None):
         if os.getenv("TS_LIB_PATH") is not None and library_loc is None:
@@ -38,19 +39,19 @@ class BaseParser(object):
             raise ParserLibraryNotFoundError(f"Parser library '{library_loc}' not found. Did you set up the environement variables?")
         
         if os.getenv("QUERY_FILE_PATH") is not None and query_file_path is None:
-            query_file_path =  os.getenv("QUERY_FILE_PATH")
+            query_file_path = os.getenv("QUERY_FILE_PATH")
         
-        if not query_file_path:
-            # you may need to do something like this - 
-            # p = pkg_resources.resource_string(__name__, "assets/queries/queries.yml")
-            # and then to get the string rep do p.decode('utf-8')
-            query_file_path = BaseParser.DEFAULT_QUERY_FILE_PATH
-
+        if query_file_path:
+            query = Query.fromFile(query_file_path)
+        else:
+            query_file_content = pkg_resources.resource_string(__name__, BaseParser.DEFAULT_QUERY_FILE_PATH)\
+                                              .decode("utf-8")
+            query = Query.fromString(query_file_content)
         
         self.language = Language(library_loc, language)
         self.parser = Parser()
         self.parser.set_language(self.language)
-        self.qclass = Query(query_file_path)
+        self.qclass = query
         self.QUERIES = self.qclass[query_class_name]
     
     def _run_query_and_get_captures(self, q_name: str, root_node:  Node) -> List:
