@@ -1,6 +1,5 @@
 import pathlib
 from setuptools import find_packages, setup
-from tree_hugger import __version__
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -17,13 +16,14 @@ long_description_content_type="text/markdown",
 url="https://github.com/autosoft-dev/tree-hugger",
 author="CodistAI",
 author_email="shubhadeep@cdist-ai.com",
+include_package_data=True,
 license="MIT",
 classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
 ],
-version="0.1.7",
+version="0.2.3",
 packages=find_packages(exclude=("tests",)),
 install_requires=["tree-sitter", "pygit2", "pytest", "PyYAML"],
 entry_points = {
