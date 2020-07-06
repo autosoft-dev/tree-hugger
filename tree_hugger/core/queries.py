@@ -19,3 +19,4 @@ class Query(UserDict):
         
         with open(query_file_path) as f:
             self.update(yaml.load(f, Loader=yaml.FullLoader))
+        

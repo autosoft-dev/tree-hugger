@@ -41,6 +41,9 @@ class BaseParser(object):
             query_file_path =  os.getenv("QUERY_FILE_PATH")
         
         if not query_file_path:
+            # you may need to do something like this - 
+            # p = pkg_resources.resource_string(__name__, "assets/queries/queries.yml")
+            # and then to get the string rep do p.decode('utf-8')
             query_file_path = BaseParser.DEFAULT_QUERY_FILE_PATH
 
         
