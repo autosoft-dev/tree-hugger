@@ -28,7 +28,7 @@ class PythonParser(BaseParser):
     """
 
     def __init__(self, library_loc: str=None, query_file_path: str=None):
-        super(PythonParser, self).__init__('python', 'python_quaries', library_loc, query_file_path)
+        super(PythonParser, self).__init__('python', 'python_queries', library_loc, query_file_path)
     
     def _strip_py_doc_string(self, dt: str, strip_quotes: bool) -> str:
         try:
