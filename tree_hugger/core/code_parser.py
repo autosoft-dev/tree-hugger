@@ -26,7 +26,7 @@ class BaseParser(object):
     Base parser exposes the common interface that we extend per language
     """
     
-    DEFAULT_QUERY_FILE_PATH = str(Path("assets") / "queries" / "queries.yml")
+    DEFAULT_QUERY_FILE_PATH = str(Path("parser") / "python" / "queries.yml")
 
     def __init__(self, language: str, query_class_name: str, library_loc: str=None, query_file_path: str=None):
         if os.getenv("TS_LIB_PATH") is not None and library_loc is None:
