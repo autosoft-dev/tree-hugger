@@ -25,10 +25,8 @@ class BaseParser(object):
     """
     Base parser exposes the common interface that we extend per language
     """
-    
-    DEFAULT_QUERY_FILE_PATH = str(Path("assets") / "queries" / "queries.yml")
 
-    def __init__(self, language: str, query_class_name: str, library_loc: str=None, query_file_path: str=None):
+    def __init__(self, language: str, query_class_name: str, query_file_path: str, library_loc: str=None):
         if os.getenv("TS_LIB_PATH") is not None and library_loc is None:
             library_loc = os.getenv("TS_LIB_PATH")
         
@@ -38,20 +36,10 @@ class BaseParser(object):
         if not Path(library_loc).exists() or not Path(library_loc).is_file():
             raise ParserLibraryNotFoundError(f"Parser library '{library_loc}' not found. Did you set up the environement variables?")
         
-        if os.getenv("QUERY_FILE_PATH") is not None and query_file_path is None:
-            query_file_path = os.getenv("QUERY_FILE_PATH")
-        
-        if query_file_path:
-            query = Query.fromFile(query_file_path)
-        else:
-            query_file_content = pkg_resources.resource_string(__name__, BaseParser.DEFAULT_QUERY_FILE_PATH)\
-                                              .decode("utf-8")
-            query = Query.fromString(query_file_content)
-        
         self.language = Language(library_loc, language)
         self.parser = Parser()
         self.parser.set_language(self.language)
-        self.qclass = query
+        self.qclass = Query.fromFile(query_file_path)
         self.QUERIES = self.qclass[query_class_name]
     
     def _run_query_and_get_captures(self, q_name: str, root_node:  Node) -> List:
@@ -85,19 +73,15 @@ class BaseParser(object):
     def sexp(self):
         return self.tree.root_node.sexp()
     
-    def reload_queries(self, query_file_path: str=None):
+    def reload_queries(self):
         """
         Reloads the query file and the internal data structure.
-
+    
         This is a temporary method and it should not be a part of the API. 
         mainly to dynamically reload the queries while in development for 
         IPython console
         """
-        if os.getenv("QUERY_FILE_PATH") is not None and query_file_path is None:
-            query_file_path =  os.getenv("QUERY_FILE_PATH")
-        
-        self.qclass = Query(query_file_path)
-        self.QUERIES = self.qclass['python_queries']
-    
+        self.qclass.reload()
+
     def _has_children(self, node: Node) -> bool:
         return len(node.children) > 0

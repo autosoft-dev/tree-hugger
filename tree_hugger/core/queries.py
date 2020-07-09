@@ -13,7 +13,8 @@ class Query(UserDict):
 
     data = {}
 
-    def __init__(self, query_file_content: str):
+    def __init__(self, query_file_path: str, query_file_content: str):
+        self.query_file_path = query_file_path
         self.update(query_file_content)
             
     @staticmethod
@@ -22,11 +23,10 @@ class Query(UserDict):
             raise QueryFileNotFoundError(f"Cound not find {query_file_path}")
         
         with open(query_file_path) as f:
-            query = Query(yaml.load(f, Loader=yaml.FullLoader))
+            query = Query(query_file_path, yaml.load(f, Loader=yaml.FullLoader))
 		
         return query
-        
-    @staticmethod
-    def fromString(query_file_content: str):
-        return Query(yaml.safe_load(query_file_content))
-        
+
+    def reload(self):
+        with open(self.query_file_path) as f:
+            self.update(yaml.load(f, Loader=yaml.FullLoader))

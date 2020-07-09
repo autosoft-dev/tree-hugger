@@ -23,7 +23,7 @@ classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
 ],
-version="0.2.3",
+version="0.3.0",
 packages=find_packages(exclude=("tests",)),
 install_requires=["tree-sitter", "pygit2", "pytest", "PyYAML"],
 entry_points = {

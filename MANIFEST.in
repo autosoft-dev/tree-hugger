@@ -1,1 +1,2 @@
-include tree_hugger/core/assets/queries/*.yml
+include tree_hugger/core/parser/python/*.yml
+include tree_hugger/core/parser/php/*.yml
