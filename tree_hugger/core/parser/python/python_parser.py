@@ -30,13 +30,10 @@ class PythonParser(BaseParser):
     @TODO - Implement a tree walker.
     """
 
-    QUERY_FILE_PATH = "queries.yml"
+    QUERY_FILE_PATH = Path(__file__).parent / "queries.yml"
 
     def __init__(self, library_loc: str=None, query_file_path: str=None):
-        query_file_content = pkg_resources.resource_string(__name__, PythonParser.QUERY_FILE_PATH)\
-                                          .decode("utf-8")
-        query = Query.fromString(query_file_content)
-        super(PythonParser, self).__init__('python', 'python_queries', query, library_loc)
+        super(PythonParser, self).__init__('python', 'python_queries', PythonParser.QUERY_FILE_PATH, library_loc)
     
     def _strip_py_doc_string(self, dt: str, strip_quotes: bool) -> str:
         try:
