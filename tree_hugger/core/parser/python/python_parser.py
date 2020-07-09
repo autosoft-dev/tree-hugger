@@ -2,7 +2,6 @@ import re
 from typing import List, Dict
 import logging
 from pathlib import Path
-import pkg_resources
 
 from tree_sitter import Tree, Node
 
