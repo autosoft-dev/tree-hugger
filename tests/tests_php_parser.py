@@ -13,3 +13,16 @@ def test_parser_get_all_function_names(php_parser):
 		'foo', 
 		'test',
 	])
+
+def test_parser_get_all_class_method_names(php_parser):
+	assert php_parser.get_all_class_method_names() == {
+		'Car': [
+			'Car',
+			'bar'
+		]
+	}
+
+def test_parser_get_all_class_names(php_parser):
+	assert set(php_parser.get_all_class_names()) == set([
+		'Car',
+	])

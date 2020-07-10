@@ -6,3 +6,27 @@ php_queries:
             name: (name) @function.def
         )
         "
+    all_class_names:
+        "
+        (
+            class_declaration
+            name: (name) @class.def
+        )
+        "
+    all_class_methods:
+        "
+        (
+            
+            class_declaration
+            name: (name) @class.name
+        )
+
+        ( class_declaration
+            body: (
+                declaration_list (
+                    method_declaration
+                    name: (name) @method.name
+                )
+            )
+        )
+        "
