@@ -3,6 +3,6 @@ php_queries:
         "
         (
             function_definition
-            name: (identifier) @function.def
+            name: (name) @function.def
         )
         "

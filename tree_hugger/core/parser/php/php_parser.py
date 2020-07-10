@@ -22,12 +22,8 @@ class PHPParser(BaseParser):
         It excludes all the methods, i.e. functions defined inside a class
         """
         captures = self._run_query_and_get_captures('all_function_names', self.root_node)
-        print(captures)
         all_funcs = set([match_from_span(n[0], self.splitted_code) for n in captures])
 
-        methods = self.get_all_class_method_names()
-        all_methods = set([method_name  for key, value in methods.items() for method_name in value])
+        return list(all_funcs)
 
-        return list(all_funcs - all_methods)
-    
     
