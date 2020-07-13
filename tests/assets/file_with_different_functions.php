@@ -1,5 +1,12 @@
 <?php
 
+ /**
+  * PHPDoc
+  *
+  * @param int    $arg1 First Argument
+  * @param string $arg2 Second Argument
+  * @param int    $argn Last Argument
+  */
 function foo($arg_1, $arg_2, $arg_n) {
     echo "Example\n";
     return $retval;

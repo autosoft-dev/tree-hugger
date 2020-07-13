@@ -2,7 +2,7 @@ import re
 from typing import List, Dict
 from pathlib import Path
 
-from tree_sitter import Tree, Node
+from tree_sitter import Tree, Node, TreeCursor
 
 from tree_hugger.core.code_parser import BaseParser, match_from_span
 from tree_hugger.core.queries import Query
@@ -25,7 +25,7 @@ class PHPParser(BaseParser):
         all_funcs = set([match_from_span(n[0], self.splitted_code) for n in captures])
 
         return list(all_funcs)
-        
+
     def get_all_class_method_names(self) -> List:
         """
         Gets all the method names from a file. 
@@ -50,3 +50,23 @@ class PHPParser(BaseParser):
         """
         captures = self._run_query_and_get_captures('all_class_names', self.root_node)
         return [match_from_span(t[0], self.splitted_code) for t in captures]
+
+    def _walk_recursive_documentation(self, cursor: TreeCursor, lines: List, documented: Dict):
+        n = cursor.node
+        for i in range(len(n.children)):
+            if i < len(n.children)-1 and n.children[i].type == "comment" and n.children[i+1].type == "function_definition":
+                name = str(match_from_span(cursor.node.children[i+1].child_by_field_name("name"), lines))
+                documented[name] = str(match_from_span(cursor.node.children[i], lines))
+            self._walk_recursive_documentation(n.children[i].walk(), lines, documented)
+
+    def get_all_function_docstrings(self) -> Dict:
+        """
+        Returns a dict where function names are the key and the comment docs are the values
+
+        Excludes any methods, i.e., functions defined inside a class.
+        """
+        documentation = {}
+        self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, documentation)
+        return documentation
+        
+        
