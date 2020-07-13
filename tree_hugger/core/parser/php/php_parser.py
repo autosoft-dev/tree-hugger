@@ -15,7 +15,7 @@ class PHPParser(BaseParser):
     def __init__(self, library_loc: str=None, query_file_path: str=None):
         super(PHPParser, self).__init__('php', 'php_queries', PHPParser.QUERY_FILE_PATH, library_loc)
 
-    def get_all_function_names(self) -> List:
+    def get_all_function_names(self) -> List[str]:
         """
         Gets all function names from a file.
 
@@ -26,7 +26,7 @@ class PHPParser(BaseParser):
 
         return list(all_funcs)
 
-    def get_all_class_method_names(self) -> List:
+    def get_all_class_method_names(self) -> List[str]:
         """
         Gets all the method names from a file. 
 
@@ -51,27 +51,25 @@ class PHPParser(BaseParser):
         captures = self._run_query_and_get_captures('all_class_names', self.root_node)
         return [match_from_span(t[0], self.splitted_code) for t in captures]
         
-    def get_all_function_bodies(self) -> Dict:
+    def get_all_function_bodies(self) -> Dict[str, str]:
         """
         Returns a dict where function names are the key and the whole function code are the values
 
         Excludes any methods, i.e., functions defined inside a class.
         """
         function_names = self.get_all_function_names()
-        func_and_params = self.function_names_with_params()
         
         captures = self._run_query_and_get_captures('all_function_bodies', self.root_node)
         
-        ret_struct = {}
-        pp = {}
+        function_bodies = {}
         for i in range(0, len(captures), 2):
             func_name = match_from_span(captures[i][0], self.splitted_code)
             if func_name in function_names:
-                pp[func_name] = match_from_span(captures[i+1][0], self.splitted_code)
+                function_bodies[func_name] = match_from_span(captures[i+1][0], self.splitted_code)
 
-        return pp
+        return function_bodies
     
-    def function_names_with_params(self):
+    def function_names_with_params(self) -> Dict[str, str]:
         """
         Returns a dictionary with all the function names and their params
         """
@@ -87,7 +85,7 @@ class PHPParser(BaseParser):
         
         return ret_struct
 
-    def _walk_recursive_documentation(self, cursor: TreeCursor, lines: List, node_type, documented: Dict):
+    def _walk_recursive_documentation(self, cursor: TreeCursor, lines: List, node_type: str, documented: Dict):
         n = cursor.node
         for i in range(len(n.children)):
             if i < len(n.children)-1 and n.children[i].type == "comment" and n.children[i+1].type == node_type:
@@ -95,7 +93,7 @@ class PHPParser(BaseParser):
                 documented[name] = str(match_from_span(cursor.node.children[i], lines))
             self._walk_recursive_documentation(n.children[i].walk(), lines, node_type, documented)
 
-    def get_all_function_phpdocs(self) -> Dict:
+    def get_all_function_phpdocs(self) -> Dict[str, str]:
         """
         Returns a dict where function names are the key and the comment docs are the values
 
@@ -105,7 +103,7 @@ class PHPParser(BaseParser):
         self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, "function_definition", documentation)
         return documentation
 
-    def get_all_method_phpdocs(self) -> Dict:
+    def get_all_method_phpdocs(self) -> Dict[str, str]:
         """
         Returns a dict where method names are the key and the comment docs are the values
 
@@ -115,7 +113,7 @@ class PHPParser(BaseParser):
         self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, "method_declaration", documentation)
         return documentation
    
-    def get_all_class_phpdocs(self) -> Dict:
+    def get_all_class_phpdocs(self) -> Dict[str, str]:
         """
         Returns the comment docs of all classes
         """

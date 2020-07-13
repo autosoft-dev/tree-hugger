@@ -19,10 +19,14 @@ def test_parser_get_all_class_method_names(php_parser):
 		'Car': [
 			'Car',
 			'bar'
+		],
+		'Truck': [
+			'drive'
 		]
 	}
 
 def test_parser_get_all_class_names(php_parser):
 	assert set(php_parser.get_all_class_names()) == set([
 		'Car',
+		'Truck'
 	])
