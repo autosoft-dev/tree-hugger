@@ -93,7 +93,7 @@ class PHPParser(BaseParser):
                 documented[name] = str(match_from_span(cursor.node.children[i], lines))
             self._walk_recursive_documentation(n.children[i].walk(), lines, node_type, documented)
 
-    def get_all_function_phpdocs(self) -> Dict[str, str]:
+    def get_all_function_documentation(self) -> Dict[str, str]:
         """
         Returns a dict where function names are the key and the comment docs are the values
 
@@ -103,7 +103,7 @@ class PHPParser(BaseParser):
         self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, "function_definition", documentation)
         return documentation
 
-    def get_all_method_phpdocs(self) -> Dict[str, str]:
+    def get_all_method_documentation(self) -> Dict[str, str]:
         """
         Returns a dict where method names are the key and the comment docs are the values
 
@@ -113,7 +113,7 @@ class PHPParser(BaseParser):
         self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, "method_declaration", documentation)
         return documentation
    
-    def get_all_class_phpdocs(self) -> Dict[str, str]:
+    def get_all_class_documentation(self) -> Dict[str, str]:
         """
         Returns the comment docs of all classes
         """
