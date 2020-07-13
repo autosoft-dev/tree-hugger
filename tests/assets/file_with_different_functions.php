@@ -13,8 +13,7 @@ function foo($arg_1, $arg_2, $arg_n) {
 }
 
 function test() {
-    echo "Example\n";
-    return $retval;
+    return 2*x + 1;
 }
 
 /*

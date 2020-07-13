@@ -30,3 +30,19 @@ php_queries:
             )
         )
         "
+    all_function_names_and_params:
+        "
+        (
+            function_definition
+            name: (name) @func.def
+            parameters: (formal_parameters) @func.params
+        )
+        "
+    all_function_bodies:
+        "
+        (
+            function_definition
+            name: (name) @function.name
+            body: (compound_statement) @function.code
+        )
+        "

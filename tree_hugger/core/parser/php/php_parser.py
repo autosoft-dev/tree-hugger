@@ -50,6 +50,42 @@ class PHPParser(BaseParser):
         """
         captures = self._run_query_and_get_captures('all_class_names', self.root_node)
         return [match_from_span(t[0], self.splitted_code) for t in captures]
+        
+    def get_all_function_bodies(self) -> Dict:
+        """
+        Returns a dict where function names are the key and the whole function code are the values
+
+        Excludes any methods, i.e., functions defined inside a class.
+        """
+        function_names = self.get_all_function_names()
+        func_and_params = self.function_names_with_params()
+        
+        captures = self._run_query_and_get_captures('all_function_bodies', self.root_node)
+        
+        ret_struct = {}
+        pp = {}
+        for i in range(0, len(captures), 2):
+            func_name = match_from_span(captures[i][0], self.splitted_code)
+            if func_name in function_names:
+                pp[func_name] = match_from_span(captures[i+1][0], self.splitted_code)
+
+        return pp
+    
+    def function_names_with_params(self):
+        """
+        Returns a dictionary with all the function names and their params
+        """
+        function_names = self.get_all_function_names()
+        captures = self._run_query_and_get_captures('all_function_names_and_params', self.root_node)
+        ret_struct = {}
+
+        for i in range(0, len(captures), 2):
+            func_name = match_from_span(captures[i][0], self.splitted_code)
+            if func_name in function_names:
+                params = match_from_span(captures[i+1][0], self.splitted_code)
+                ret_struct[func_name] = params
+        
+        return ret_struct
 
     def _walk_recursive_documentation(self, cursor: TreeCursor, lines: List, node_type, documented: Dict):
         n = cursor.node
