@@ -51,22 +51,40 @@ class PHPParser(BaseParser):
         captures = self._run_query_and_get_captures('all_class_names', self.root_node)
         return [match_from_span(t[0], self.splitted_code) for t in captures]
 
-    def _walk_recursive_documentation(self, cursor: TreeCursor, lines: List, documented: Dict):
+    def _walk_recursive_documentation(self, cursor: TreeCursor, lines: List, node_type, documented: Dict):
         n = cursor.node
         for i in range(len(n.children)):
-            if i < len(n.children)-1 and n.children[i].type == "comment" and n.children[i+1].type == "function_definition":
+            if i < len(n.children)-1 and n.children[i].type == "comment" and n.children[i+1].type == node_type:
                 name = str(match_from_span(cursor.node.children[i+1].child_by_field_name("name"), lines))
                 documented[name] = str(match_from_span(cursor.node.children[i], lines))
-            self._walk_recursive_documentation(n.children[i].walk(), lines, documented)
+            self._walk_recursive_documentation(n.children[i].walk(), lines, node_type, documented)
 
-    def get_all_function_docstrings(self) -> Dict:
+    def get_all_function_phpdocs(self) -> Dict:
         """
         Returns a dict where function names are the key and the comment docs are the values
 
         Excludes any methods, i.e., functions defined inside a class.
         """
         documentation = {}
-        self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, documentation)
+        self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, "function_definition", documentation)
+        return documentation
+
+    def get_all_method_phpdocs(self) -> Dict:
+        """
+        Returns a dict where method names are the key and the comment docs are the values
+
+        Excludes any functions, i.e., functions defined outside a class.
+        """
+        documentation = {}
+        self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, "method_declaration", documentation)
+        return documentation
+   
+    def get_all_class_phpdocs(self) -> Dict:
+        """
+        Returns the comment docs of all classes
+        """
+        documentation = {}
+        self._walk_recursive_documentation(self.root_node.walk(), self.splitted_code, "class_declaration", documentation)
         return documentation
         
         

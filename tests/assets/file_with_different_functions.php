@@ -17,13 +17,26 @@ function test() {
     return $retval;
 }
 
+/*
+ * Car documentation
+ */
 class Car {
     function Car() {
         $this->model = "Tesla";
     }
+    // Method doc comment
     public function bar() {
         return 'method';
     }
+}
+
+class Truck {
+
+    // Method doc comment
+    function drive() {
+
+    }
+
 }
 
 // create an object
