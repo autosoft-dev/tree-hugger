@@ -30,3 +30,26 @@ def test_parser_get_all_class_names(php_parser):
 		'Car',
 		'Truck'
 	])
+
+def test_parser_get_all_class_documentation(php_parser):
+	assert php_parser.get_all_class_documentation() == {
+		'Car': '/*\n * Car documentation\n */'
+	}
+
+def test_parser_get_all_function_documentation(php_parser):
+	assert php_parser.get_all_function_documentation() == {
+		'foo': '/**\n  * PHPDoc\n  *\n  * @param int    $arg1 First Argument\n  * @param string $arg2 Second Argument\n  * @param int    $argn Last Argument\n  */'
+	}
+
+def test_parser_get_all_function_bodies(php_parser):
+	assert php_parser.get_all_function_bodies() == {
+		'foo': '{\n    echo "Example\\n";\n    return $retval;\n}',
+		'test': '{\n    return 2*x + 1;\n}'
+	}
+
+def test_parser_function_names_with_params(php_parser):
+	assert php_parser.function_names_with_params() == {
+		'foo': '($arg_1, $arg_2, $arg_n)', 
+		'test': '()'
+	}
+
