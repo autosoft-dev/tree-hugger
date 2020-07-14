@@ -1,113 +1,48 @@
-python_queries:
-    all_class_names:
-        "
-        (
-            class_definition
-            name: (identifier) @class.def
-        )
-        "
+php_queries:
     all_function_names:
         "
         (
             function_definition
-            name: (identifier) @function.def
+            name: (name) @function.def
         )
         "
-    all_function_doctrings:
+    all_class_names:
         "
         (
-            function_definition
-            name: (identifier) @function.def
-            body: (block(expression_statement(string))) @function.docstring
-        )
-        "
-    all_class_docstrings:
-        "
-        (
-            class_definition
-            name: (identifier) @class.def
-            body: (
-                    block
-                    (expression_statement
-                        (string)
-                    )
-                ) @class.docstring
+            class_declaration
+            name: (name) @class.def
         )
         "
     all_class_methods:
         "
         (
             
-            class_definition
-            name: (identifier) @class.name
+            class_declaration
+            name: (name) @class.name
         )
 
-        ( class_definition
+        ( class_declaration
             body: (
-                block(
-                    function_definition
-                    name: (identifier) @method.name
+                declaration_list (
+                    method_declaration
+                    name: (name) @method.name
                 )
             )
         )
-        ( class_definition
-            body: (
-                block(
-                    decorated_definition
-                    definition: (
-                        function_definition
-                        name: (identifier) @decorated.name
-                    )
-                )
-            )
-        )        
-        ( class_definition
-            body: (
-                block(
-                    decorated_definition
-                    definition: (
-                        function_definition
-                        body: (
-                            block(
-                                function_definition
-                                name: (identifier) @decorated.inner.name 
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        "
-    all_class_method_docstrings:
-        "
-        (
-            class_definition
-            name: (identifier) @class.name
-        )
-            
-        ( class_definition
-            body: (
-                block(
-                    function_definition
-                    name: (identifier) @method.name
-                    body: (block(expression_statement(string))) @method.docstr
-                )
-            )
-        )        
         "
     all_function_names_and_params:
         "
         (
             function_definition
-            name: (identifier) @func.def
-            parameters: (parameters) @func.params
+            name: (name) @func.def
+            parameters: (formal_parameters) @func.params
         )
         "
     all_function_bodies:
         "
         (
             function_definition
-            name: (identifier) @function.name
-            body: (block) @function.code
+            name: (name) @function.name
+            body: (compound_statement) @function.code
         )
         "

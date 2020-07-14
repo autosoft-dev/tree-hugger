@@ -147,7 +147,7 @@ Out[4]:
 OR
 
 ```python
-pp.get_all_function_docstrings()
+pp.get_all_function_documentation()
 Out[5]:
 {'parent': '"""This is the parent function\n    \n    There are other lines in the doc string\n    This is the third line\n\n    And this is the fourth\n    """',
  'first_child': "'''\n        This is first child\n        '''",
@@ -156,7 +156,7 @@ Out[5]:
  'say_whee': '"""\n    Hellooooooooo\n\n    This is a function with decorators\n    """'}
  ```
 
- *(Notice that, in the last call, it only returns the functions which has a docstring)*
+ *(Notice that, in the last call, it only returns the functions which has a documentation comment)*
 
 
 ## One or two words about extending
@@ -174,7 +174,7 @@ This file has a very simple structure. Each main section is named `<language>_qu
 This main section  is further sub-divded into few (as many as you need, actually) sections. Each of them has the same structure. A name of a query followed by the query itself. Written as an s-expression. One example:
 
 ```
-all_function_doctrings:
+all_function_docstrings:
         "
         (
             function_definition
@@ -190,7 +190,7 @@ Some example queries, that you will find in the yaml file (and their correspondi
 ```
 * all_function_names => get_all_function_names()
 
-* all_function_doctrings => get_all_function_docstrings()
+* all_function_docstrings => get_all_function_documentation()
 
 * all_class_methods => get_all_class_method_names()
 ```
