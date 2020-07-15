@@ -51,3 +51,14 @@ def test_parser_get_all_function_documentations(python_parser):
 		'say_whee': '"""\n    Hellooooooooo\n\n    This is a function with decorators\n    """'
 	}
 
+def test_parser_walk(python_parser):
+	l = []
+	python_parser.walk(lambda node: l.append(1) if node.type == "function_definition" else l.append(0))
+	assert sum(l) == 11
+
+def test_parser_reduction(python_parser):
+	assert python_parser.reduction(
+	    lambda node,acc: acc+1 if node.type == "function_definition" else acc, 0
+	) == 11
+	
+

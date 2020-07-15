@@ -53,3 +53,14 @@ def test_parser_function_names_with_params(php_parser):
 		'test': '()'
 	}
 
+def test_parser_walk(php_parser):
+	l = []
+	php_parser.walk(lambda node: l.append(1) if node.type == "function_definition" else l.append(0))
+	assert sum(l) == 2
+
+def test_parser_reduction(php_parser):
+	assert php_parser.reduction(
+	    lambda node,acc: acc+1 if node.type == "function_definition" else acc, 0
+	) == 2
+
+
