@@ -147,7 +147,7 @@ Out[4]:
 OR
 
 ```python
-pp.get_all_function_documentation()
+pp.get_all_function_documentations()
 Out[5]:
 {'parent': '"""This is the parent function\n    \n    There are other lines in the doc string\n    This is the third line\n\n    And this is the fourth\n    """',
  'first_child': "'''\n        This is first child\n        '''",
@@ -190,7 +190,7 @@ Some example queries, that you will find in the yaml file (and their correspondi
 ```
 * all_function_names => get_all_function_names()
 
-* all_function_docstrings => get_all_function_documentation()
+* all_function_docstrings => get_all_function_documentations()
 
 * all_class_methods => get_all_class_method_names()
 ```

@@ -31,13 +31,13 @@ def test_parser_get_all_class_names(php_parser):
 		'Truck'
 	])
 
-def test_parser_get_all_class_documentation(php_parser):
-	assert php_parser.get_all_class_documentation() == {
+def test_parser_get_all_class_documentations(php_parser):
+	assert php_parser.get_all_class_documentations() == {
 		'Car': '/*\n * Car documentation\n */'
 	}
 
-def test_parser_get_all_function_documentation(php_parser):
-	assert php_parser.get_all_function_documentation() == {
+def test_parser_get_all_function_documentations(php_parser):
+	assert php_parser.get_all_function_documentations() == {
 		'foo': '/**\n  * PHPDoc\n  *\n  * @param int    $arg1 First Argument\n  * @param string $arg2 Second Argument\n  * @param int    $argn Last Argument\n  */'
 	}
 
