@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List
 import pkg_resources
 
-from tree_sitter import Node, Language, Parser, Tree
+from tree_sitter import Node, Language, Parser, Tree, TreeCursor
 
 from tree_hugger.exceptions import ParserLibraryNotFoundError, SourceFileNotFoundError, QueryFileNotFoundError
 from tree_hugger.core.queries import Query
@@ -85,3 +85,26 @@ class BaseParser(object):
 
     def _has_children(self, node: Node) -> bool:
         return len(node.children) > 0
+        
+    def _walk_recursive(self, cursor: TreeCursor, apply):
+        apply(cursor.node)
+        for ch in cursor.node.children:
+            self._walk_recursive(ch.walk(), apply)
+    
+    def _reduce_recursive(self, cursor: TreeCursor, reduction, accumulator):
+        acc = accumulator
+        for ch in cursor.node.children:
+            acc = self._reduce_recursive(ch.walk(), reduction, reduction(ch, acc))
+        return acc
+
+    def walk(self, apply):
+        """
+        Iterate over the tree of the parsed code and apply the given 
+        """ 
+        self._walk_recursive(self.root_node.walk(), apply)
+    
+    def reduction(self, reduction, neutral):
+        """
+        Apply a reduction operation over the tree of the parsed code
+        """ 
+        return self._reduce_recursive(self.root_node.walk(), reduction, reduction(self.root_node, neutral))

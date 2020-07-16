@@ -96,9 +96,9 @@ class PythonParser(BaseParser):
 
         return list(all_funcs - all_methods)
     
-    def get_all_function_documentation(self, strip_quotes: bool=False) -> Dict:
+    def get_all_function_docstrings(self, strip_quotes: bool=False) -> Dict:
         """
-        Returns a dict where function names are the key and the docstrings are the values
+        Returns a dict where function names are the key and the documentationd are the values
 
         Excludes any methods, i.e., functions defined inside a class.
 
@@ -115,8 +115,16 @@ class PythonParser(BaseParser):
                                                                   captures[i+1][0], self.splitted_code
                                                                   ), strip_quotes)
         return ret_struct
+        
+    def get_all_function_documentations(self) -> Dict:
+        """
+        Returns a dict where function names are the key and the docstrings are the values
+
+        Excludes any methods, i.e., functions defined inside a class.
+        """
+        return self.get_all_function_docstrings()
     
-    def get_all_method_documentation(self, strip_quotes: bool=False) -> Dict:
+    def get_all_method_docstrings(self, strip_quotes: bool=False) -> Dict:
         """
         Returns a dict where method names are the key and the docstrings are the values
 
@@ -143,6 +151,14 @@ class PythonParser(BaseParser):
                                                                                       tpl[0], self.splitted_code
                                                                                       ), strip_quotes)
         return ret_struct
+    
+    def get_all_method_documentations(self, strip_quotes: bool=False) -> Dict:
+        """
+        Returns a dict where method names are the key and the docstrings are the values
+
+        Excludes any functions, i.e., functions defined outside a class.
+        """
+        return self.get_all_method_docstrings()
     
     def get_all_function_bodies(self, strip_docstr: bool=False) -> Dict:
         """
@@ -216,7 +232,7 @@ class PythonParser(BaseParser):
         captures = self._run_query_and_get_captures('all_class_names', self.root_node)
         return [match_from_span(t[0], self.splitted_code) for t in captures]
     
-    def get_all_class_documentation(self, strip_quotes: bool=False) -> Dict[str, str]:
+    def get_all_class_docstrings(self, strip_quotes: bool=False) -> Dict[str, str]:
         """
         Returns the docstring of all classes
 
@@ -237,3 +253,9 @@ class PythonParser(BaseParser):
                             class_docstr = self._strip_py_doc_string(class_docstr, strip_quotes)
                         ret_struct[class_name] = class_docstr
         return ret_struct
+        
+    def get_all_class_documentations(self, strip_quotes: bool=False) -> Dict[str, str]:
+        """
+        Returns the docstring of all classes
+        """
+        return self.get_all_class_docstrings()
