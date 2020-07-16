@@ -15,8 +15,18 @@ def test_parser_get_all_function_names(python_parser):
 		'first_child', 
 		'my_decorator', 
 		'second_child', 
-		'say_whee'
+		'say_whee',
+		'function_different_args'
 	])
+	
+def get_all_function_names_with_params(python_parser):
+	assert python_parser.get_all_function_names_with_params()["function_different_args"] == [
+	    ('foo', None, None),
+	    ('bar', 'int', None),
+	    ('no', None, 'None'),
+	    ('pi', None, '3.14'),
+	    ('opt_typed', 'Dict[str,str]', '{}')
+	]
 	
 def test_parser_get_all_class_documentations(python_parser):
 	assert python_parser.get_all_class_documentations() == {
@@ -54,11 +64,11 @@ def test_parser_get_all_function_documentations(python_parser):
 def test_parser_walk(python_parser):
 	l = []
 	python_parser.walk(lambda node: l.append(1) if node.type == "function_definition" else l.append(0))
-	assert sum(l) == 11
+	assert sum(l) == 12
 
 def test_parser_reduction(python_parser):
 	assert python_parser.reduction(
 	    lambda node,acc: acc+1 if node.type == "function_definition" else acc, 0
-	) == 11
+	) == 12
 	
 
