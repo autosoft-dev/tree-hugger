@@ -203,7 +203,7 @@ class PythonParser(BaseParser):
                 ret_struct[k] = f"def {k}{func_and_params[k]}:\n{spaces}{v}"
         return ret_struct
     
-    def function_names_with_params(self, split_params_in_list: bool=False):
+    def get_all_function_names_with_params(self, split_params_in_list: bool=False):
         """
         Returns a dictionary with all the function names and their params
 
@@ -212,17 +212,30 @@ class PythonParser(BaseParser):
         function_names = self.get_all_function_names()
         captures = self._run_query_and_get_captures('all_function_names_and_params', self.root_node)
         ret_struct = {}
-
         for i in range(0, len(captures), 2):
             func_name = match_from_span(captures[i][0], self.splitted_code)
-            if func_name in function_names:
-                params = match_from_span(captures[i+1][0], self.splitted_code)
-                if split_params_in_list:
-                    if params.startswith("(") and params.endswith(")"):
-                        params = params[1:-1]
-                        params = params.split(",")
-                ret_struct[func_name] = params
-        
+            params = []
+            for param in captures[i+1][0].children:
+                if param.type == 'identifier':
+                    name = match_from_span(param, self.splitted_code)
+                    typ = None
+                    default_value = None
+                elif param.type == 'typed_parameter':
+                    name = match_from_span(param.children[0], self.splitted_code)
+                    typ = match_from_span(param.child_by_field_name("type"), self.splitted_code)
+                    default_value = None
+                elif param.type == 'default_parameter':
+                    name = match_from_span(param.child_by_field_name("name"), self.splitted_code)
+                    typ = None
+                    default_value = match_from_span(param.child_by_field_name("value"), self.splitted_code)
+                elif param.type == 'typed_default_parameter':
+                    name = match_from_span(param.child_by_field_name("name"), self.splitted_code)
+                    typ = match_from_span(param.child_by_field_name("type"), self.splitted_code)
+                    default_value = match_from_span(param.child_by_field_name("value"), self.splitted_code)
+                else:
+                    continue
+                params.append((name, typ, default_value))
+            ret_struct[func_name] = params        
         return ret_struct
     
     def get_all_class_names(self) -> List[str]:

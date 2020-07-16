@@ -55,6 +55,9 @@ def say_whee():
     print("Whee!")
 
 
+def function_different_args(foo, bar: int, no=None, pi=3.14, opt_typed: Dict[str,str]={}):
+    return 0
+
 
 class BaseClass(object):
     """
