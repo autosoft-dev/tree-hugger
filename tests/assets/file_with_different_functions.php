@@ -29,6 +29,17 @@ class Car {
     }
 }
 
+function simple_params(string $a, Car $b, $c = 0, string $d = "arg") {
+    echo "Example\n";
+    return $retval;
+}
+
+function variadic_param(int ... $array) {
+    echo "Example\n";
+    return $retval;
+}
+
+
 class Truck {
 
     // Method doc comment
