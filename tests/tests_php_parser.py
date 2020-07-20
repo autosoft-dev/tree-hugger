@@ -12,7 +12,21 @@ def test_parser_get_all_function_names(php_parser):
 	assert set(php_parser.get_all_function_names()) == set([
 		'foo', 
 		'test',
+		'simple_params',
+		'variadic_param'
 	])
+
+def get_all_function_names_with_params(php_parser):
+	assert php_parser.get_all_function_names_with_params()["test"] == []
+	assert php_parser.get_all_function_names_with_params()["simple_params"] == [
+        ('a', 'string', None),
+        ('b', 'Car', None),
+        ('c', None, '0'),
+        ('d', 'string', '"arg"')
+	]
+	assert php_parser.get_all_function_names_with_params()["variadic_param"] == [
+        ('array', 'int', None)
+	]
 
 def test_parser_get_all_class_method_names(php_parser):
 	assert php_parser.get_all_class_method_names() == {
@@ -42,25 +56,20 @@ def test_parser_get_all_function_documentations(php_parser):
 	}
 
 def test_parser_get_all_function_bodies(php_parser):
-	assert php_parser.get_all_function_bodies() == {
-		'foo': '{\n    echo "Example\\n";\n    return $retval;\n}',
-		'test': '{\n    return 2*x + 1;\n}'
-	}
-
-def test_parser_function_names_with_params(php_parser):
-	assert php_parser.function_names_with_params() == {
-		'foo': '($arg_1, $arg_2, $arg_n)', 
-		'test': '()'
-	}
+	assert php_parser.get_all_function_bodies()['foo'] ==  \
+	    '{\n    echo "Example\\n";\n    return $retval;\n}'
+def test_parser_get_all_function_bodies(php_parser):
+	assert php_parser.get_all_function_bodies()['test'] == \
+		'{\n    return 2*x + 1;\n}'
 
 def test_parser_walk(php_parser):
 	l = []
 	php_parser.walk(lambda node: l.append(1) if node.type == "function_definition" else l.append(0))
-	assert sum(l) == 2
+	assert sum(l) == 4
 
 def test_parser_reduction(php_parser):
 	assert php_parser.reduction(
 	    lambda node,acc: acc+1 if node.type == "function_definition" else acc, 0
-	) == 2
+	) == 4  
 
 

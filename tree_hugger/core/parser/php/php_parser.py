@@ -69,19 +69,39 @@ class PHPParser(BaseParser):
 
         return function_bodies
     
-    def function_names_with_params(self) -> Dict[str, str]:
+    def get_all_function_names_with_params(self) -> Dict[str, str]:
         """
         Returns a dictionary with all the function names and their params
         """
-        function_names = self.get_all_function_names()
         captures = self._run_query_and_get_captures('all_function_names_and_params', self.root_node)
         ret_struct = {}
-
         for i in range(0, len(captures), 2):
             func_name = match_from_span(captures[i][0], self.splitted_code)
-            if func_name in function_names:
-                params = match_from_span(captures[i+1][0], self.splitted_code)
-                ret_struct[func_name] = params
+            params = []
+            for param in captures[i+1][0].children:
+                if param.type == "simple_parameter":
+                    name = match_from_span(
+                        param.child_by_field_name("name").children[1],
+                        self.splitted_code
+                    )
+                    node_typ = param.child_by_field_name("type")
+                    typ = match_from_span(node_typ, self.splitted_code) if node_typ else None
+                    node_value = param.child_by_field_name("default_value")
+                    value = match_from_span(node_value, self.splitted_code) if node_value else None
+                elif param.type == "variadic_parameter":
+                    name = match_from_span(
+                        param.child_by_field_name("name").children[1],
+                        self.splitted_code
+                    )
+                    typ = match_from_span(
+                        param.child_by_field_name("type"),
+                        self.splitted_code
+                    )
+                    value = None
+                else:
+                    continue
+                params.append((name,typ,value))
+            ret_struct[func_name] = params
         
         return ret_struct
 

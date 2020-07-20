@@ -207,7 +207,6 @@ class PythonParser(BaseParser):
         """
         Returns a dictionary with all the function names and their params
         """
-        function_names = self.get_all_function_names()
         captures = self._run_query_and_get_captures('all_function_names_and_params', self.root_node)
         ret_struct = {}
         for i in range(0, len(captures), 2):
