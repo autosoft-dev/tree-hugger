@@ -61,8 +61,8 @@ class JavaParser(BaseParser):
         captures = self._run_query_and_get_captures('all_method_names_and_params', self.root_node)
         ret_struct = {}
         for i in range(0, len(captures), 2):
-            func_name = match_from_span(captures[i][0], self.splitted_code)
-            ret_struct[func_name] = []
+            method_name = match_from_span(captures[i][0], self.splitted_code)
+            ret_struct[method_name] = []
             for param in captures[i+1][0].children:
                 if param.type == "formal_parameter":
                     name = match_from_span(
@@ -84,18 +84,17 @@ class JavaParser(BaseParser):
                     )
                 else:
                     continue
-                ret_struct[func_name].append((name,typ))
+                ret_struct[method_name].append((name,typ))
         
         return ret_struct
 
-    def _walk_recursive_phpdoc(self, cursor: TreeCursor, lines: List, node_type: str, documented: Dict):
+    def _walk_recursive_javadoc(self, cursor: TreeCursor, lines: List, node_type: str, documented: Dict):
         n = cursor.node
         for i in range(len(n.children)):
             if i < len(n.children)-1 and n.children[i].type == "comment" and n.children[i+1].type == node_type:
                 name = str(match_from_span(cursor.node.children[i+1].child_by_field_name("name"), lines))
                 documented[name] = str(match_from_span(cursor.node.children[i], lines))
-            self._walk_recursive_phpdoc(n.children[i].walk(), lines, node_type, documented)
-
+            self._walk_recursive_javadoc(n.children[i].walk(), lines, node_type, documented)
 
     def get_all_method_javadocs(self) -> Dict[str, str]:
         """
@@ -104,7 +103,7 @@ class JavaParser(BaseParser):
         Excludes any functions, i.e., functions defined outside a class.
         """
         documentation = {}
-        self._walk_recursive_phpdoc(self.root_node.walk(), self.splitted_code, "method_declaration", documentation)
+        self._walk_recursive_javadoc(self.root_node.walk(), self.splitted_code, "method_declaration", documentation)
         return documentation
         
     def get_all_method_documentations(self) -> Dict[str, str]:
@@ -113,20 +112,20 @@ class JavaParser(BaseParser):
 
         Excludes any functions, i.e., functions defined outside a class.
         """
-        return self.get_all_method_phpdocs()
+        return self.get_all_method_javadocs()
    
     def get_all_class_javadocs(self) -> Dict[str, str]:
         """
         Returns the comment docs of all classes
         """
         documentation = {}
-        self._walk_recursive_phpdoc(self.root_node.walk(), self.splitted_code, "class_declaration", documentation)
+        self._walk_recursive_javadoc(self.root_node.walk(), self.splitted_code, "class_declaration", documentation)
         return documentation
    
     def get_all_class_documentations(self) -> Dict[str, str]:
         """
         Returns the comment docs of all classes
         """
-        return self.get_all_class_phpdocs()
+        return self.get_all_class_javadocs()
 
         
