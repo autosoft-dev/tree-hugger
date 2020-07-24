@@ -10,11 +10,11 @@ def java_parser():
 
 def get_all_function_names_with_params(java_parser):
 	assert java_parser.get_all_method_names_with_params()["main"] == [('arg', 'String[]')]
-	assert php_parser.get_all_function_names_with_params()["bark"] == [
+	assert java_parser.get_all_method_names_with_params()["bark"] == [
         ('sound', 'String'),
         ('repeat', 'int')
     ]
-	assert php_parser.get_all_method_names_with_params()["move"] == []
+	assert java_parser.get_all_method_names_with_params()["move"] == []
 
 def test_parser_get_all_class_method_names(java_parser):
 	assert java_parser.get_all_class_method_names() == {
