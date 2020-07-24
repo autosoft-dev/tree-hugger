@@ -16,14 +16,14 @@ def test_parser_get_all_function_names(js_parser):
 		'multiply'
 	])
 
-def get_all_function_names_with_params(js_parser):
+def test_get_all_function_names_with_params(js_parser):
 	assert js_parser.get_all_function_names_with_params()["test"] == []
 	assert js_parser.get_all_function_names_with_params()["multiply"] == [
 		('a', None),
 		('b', '1'),
 	]
 	assert js_parser.get_all_function_names_with_params()["utf8_to_b64"] == [
-		('array', None)
+		('str', None)
 	]
 	assert js_parser.get_all_function_names_with_params()["sum"] == [
 		('args', None)

@@ -8,7 +8,7 @@ def java_parser():
 	jp.parse_file("tests/assets/file_with_different_methods.java")
 	return jp
 
-def get_all_method_names_with_params(java_parser):
+def test_get_all_method_names_with_params(java_parser):
 	assert java_parser.get_all_method_names_with_params()["main"] == [('arg', 'String[]')]
 	assert java_parser.get_all_method_names_with_params()["bark"] == [
         ('sound', 'String'),

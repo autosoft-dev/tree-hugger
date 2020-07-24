@@ -100,7 +100,7 @@ class PHPParser(BaseParser):
                     value = None
                 else:
                     continue
-                ret_struct[func_name] = params.append((name,typ,value))
+                ret_struct[func_name].append((name,typ,value))
             
         
         return ret_struct
