@@ -77,7 +77,7 @@ class PHPParser(BaseParser):
         ret_struct = {}
         for i in range(0, len(captures), 2):
             func_name = match_from_span(captures[i][0], self.splitted_code)
-            params = []
+            ret_struct[func_name] = []
             for param in captures[i+1][0].children:
                 if param.type == "simple_parameter":
                     name = match_from_span(
@@ -100,8 +100,8 @@ class PHPParser(BaseParser):
                     value = None
                 else:
                     continue
-                params.append((name,typ,value))
-            ret_struct[func_name] = params
+                ret_struct[func_name] = params.append((name,typ,value))
+            
         
         return ret_struct
 

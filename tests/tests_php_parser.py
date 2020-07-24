@@ -58,7 +58,6 @@ def test_parser_get_all_function_documentations(php_parser):
 def test_parser_get_all_function_bodies(php_parser):
 	assert php_parser.get_all_function_bodies()['foo'] ==  \
 	    '{\n    echo "Example\\n";\n    return $retval;\n}'
-def test_parser_get_all_function_bodies(php_parser):
 	assert php_parser.get_all_function_bodies()['test'] == \
 		'{\n    return 2*x + 1;\n}'
 
