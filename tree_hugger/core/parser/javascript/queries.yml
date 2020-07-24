@@ -1,0 +1,48 @@
+javascript_queries:
+    all_function_names:
+        "
+        (
+            function_declaration
+            name: (identifier) @function.def
+        )
+        "
+    all_class_names:
+        "
+        (
+            class_declaration
+            name: (identifier) @class.def
+        )
+        "
+    all_class_methods:
+        "
+        (
+            
+            class_declaration
+            name: (identifier) @class.name
+        )
+
+        ( class_declaration
+            body: (
+                class_body (
+                    method_definition
+                    name: (property_identifier) @method.name
+                )
+            )
+        )
+        "
+    all_function_names_and_params:
+        "
+        (
+            function_declaration
+            name: (identifier) @func.def
+            parameters: (formal_parameters) @func.params
+        )
+        "
+    all_function_bodies:
+        "
+        (
+            function_declaration
+            name: (identifier) @function.name
+            body: (statement_block) @function.code
+        )
+        "
