@@ -16,7 +16,7 @@ def test_parser_get_all_function_names(php_parser):
 		'variadic_param'
 	])
 
-def get_all_function_names_with_params(php_parser):
+def test_get_all_function_names_with_params(php_parser):
 	assert php_parser.get_all_function_names_with_params()["test"] == []
 	assert php_parser.get_all_function_names_with_params()["simple_params"] == [
         ('a', 'string', None),

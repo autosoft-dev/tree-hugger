@@ -19,7 +19,7 @@ def test_parser_get_all_function_names(python_parser):
 		'function_different_args'
 	])
 	
-def get_all_function_names_with_params(python_parser):
+def test_get_all_function_names_with_params(python_parser):
 	assert python_parser.get_all_function_names_with_params()["function_different_args"] == [
 	    ('foo', None, None),
 	    ('bar', 'int', None),

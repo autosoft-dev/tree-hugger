@@ -8,12 +8,12 @@ from tree_hugger.core.code_parser import BaseParser, match_from_span
 from tree_hugger.core.queries import Query
 
 
-class PHPParser(BaseParser):
+class JavascriptParser(BaseParser):
 	
     QUERY_FILE_PATH = Path(__file__).parent / "queries.yml"
 
     def __init__(self, library_loc: str=None, query_file_path: str=None):
-        super(PHPParser, self).__init__('php', 'php_queries', PHPParser.QUERY_FILE_PATH, library_loc)
+        super(JavascriptParser, self).__init__('javascript', 'javascript_queries', JavascriptParser.QUERY_FILE_PATH, library_loc)
 
     def get_all_function_names(self) -> List[str]:
         """
@@ -79,48 +79,50 @@ class PHPParser(BaseParser):
             func_name = match_from_span(captures[i][0], self.splitted_code)
             ret_struct[func_name] = []
             for param in captures[i+1][0].children:
-                if param.type == "simple_parameter":
+                if param.type == "identifier":
                     name = match_from_span(
-                        param.child_by_field_name("name").children[1],
+                        param,
                         self.splitted_code
                     )
-                    node_typ = param.child_by_field_name("type")
-                    typ = match_from_span(node_typ, self.splitted_code) if node_typ else None
-                    node_value = param.child_by_field_name("default_value")
-                    value = match_from_span(node_value, self.splitted_code) if node_value else None
-                elif param.type == "variadic_parameter":
+                    value = None
+                elif param.type == "assignment_pattern":
                     name = match_from_span(
-                        param.child_by_field_name("name").children[1],
+                        param.child_by_field_name("left"),
                         self.splitted_code
                     )
-                    typ = match_from_span(
-                        param.child_by_field_name("type"),
+                    value = match_from_span(
+                        param.child_by_field_name("right"),
+                        self.splitted_code
+                    )
+                elif param.type == "rest_parameter":
+                    name = match_from_span(
+                        param.children[1],
                         self.splitted_code
                     )
                     value = None
                 else:
                     continue
-                ret_struct[func_name].append((name,typ,value))
+                ret_struct[func_name].append((name,value))
             
         
         return ret_struct
 
-    def _walk_recursive_phpdoc(self, cursor: TreeCursor, lines: List, node_type: str, documented: Dict):
+    def _walk_recursive_jsdoc(self, cursor: TreeCursor, lines: List, node_type: str, documented: Dict):
         n = cursor.node
         for i in range(len(n.children)):
             if i < len(n.children)-1 and n.children[i].type == "comment" and n.children[i+1].type == node_type:
                 name = str(match_from_span(cursor.node.children[i+1].child_by_field_name("name"), lines))
                 documented[name] = str(match_from_span(cursor.node.children[i], lines))
-            self._walk_recursive_phpdoc(n.children[i].walk(), lines, node_type, documented)
+            self._walk_recursive_jsdoc(n.children[i].walk(), lines, node_type, documented)
 
-    def get_all_function_phpdocs(self) -> Dict[str, str]:
+    def get_all_function_jsdocs(self) -> Dict[str, str]:
         """
         Returns a dict where function names are the key and the comment docs are the values
 
         Excludes any methods, i.e., functions defined inside a class.
         """
         documentation = {}
-        self._walk_recursive_phpdoc(self.root_node.walk(), self.splitted_code, "function_definition", documentation)
+        self._walk_recursive_jsdoc(self.root_node.walk(), self.splitted_code, "function_declaration", documentation)
         return documentation
         
     def get_all_function_documentations(self) -> Dict[str, str]:
@@ -129,16 +131,16 @@ class PHPParser(BaseParser):
 
         Excludes any methods, i.e., functions defined inside a class.
         """
-        return self.get_all_function_phpdocs()
+        return self.get_all_function_jsdocs()
 
-    def get_all_method_phpdocs(self) -> Dict[str, str]:
+    def get_all_method_jsdocs(self) -> Dict[str, str]:
         """
         Returns a dict where method names are the key and the comment docs are the values
 
         Excludes any functions, i.e., functions defined outside a class.
         """
         documentation = {}
-        self._walk_recursive_phpdoc(self.root_node.walk(), self.splitted_code, "method_declaration", documentation)
+        self._walk_recursive_jsdoc(self.root_node.walk(), self.splitted_code, "method_definition", documentation)
         return documentation
         
     def get_all_method_documentations(self) -> Dict[str, str]:
@@ -147,20 +149,20 @@ class PHPParser(BaseParser):
 
         Excludes any functions, i.e., functions defined outside a class.
         """
-        return self.get_all_method_phpdocs()
+        return self.get_all_method_jsdocs()
    
-    def get_all_class_phpdocs(self) -> Dict[str, str]:
+    def get_all_class_jsdocs(self) -> Dict[str, str]:
         """
         Returns the comment docs of all classes
         """
         documentation = {}
-        self._walk_recursive_phpdoc(self.root_node.walk(), self.splitted_code, "class_declaration", documentation)
+        self._walk_recursive_jsdoc(self.root_node.walk(), self.splitted_code, "class_declaration", documentation)
         return documentation
    
     def get_all_class_documentations(self) -> Dict[str, str]:
         """
         Returns the comment docs of all classes
         """
-        return self.get_all_class_phpdocs()
+        return self.get_all_class_jsdocs()
 
         
