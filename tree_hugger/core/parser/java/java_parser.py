@@ -48,9 +48,16 @@ class JavaParser(BaseParser):
         captures = self._run_query_and_get_captures('all_method_bodies', self.root_node)
         
         method_bodies = {}
-        for i in range(0, len(captures), 2):
-            method_name = match_from_span(captures[i][0], self.splitted_code)
-            method_bodies[method_name] = match_from_span(captures[i+1][0], self.splitted_code)
+        i = 0
+        while i < len(captures):
+            if captures[i][1] == "class.name":
+                current_class = match_from_span(captures[i][0], self.splitted_code)
+                method_bodies[current_class] = {}
+                i += 1
+            elif captures[i][1] == "method.name":
+                method_name = match_from_span(captures[i][0], self.splitted_code)
+                method_bodies[current_class][method_name] = match_from_span(captures[i+1][0], self.splitted_code)
+                i += 2
 
         return method_bodies
     

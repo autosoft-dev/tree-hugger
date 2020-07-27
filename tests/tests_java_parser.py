@@ -42,7 +42,8 @@ def test_parser_get_all_class_names(java_parser):
 	])
 
 def test_parser_get_all_method_bodies(java_parser):
-	assert java_parser.get_all_method_bodies()["main"] == '{\n\t\tSystem.out.println("Hello world");\n\t}'
+	assert set(java_parser.get_all_method_bodies().keys()) == {'HelloWorld', 'Animal', 'Dog'}
+	assert java_parser.get_all_method_bodies()["HelloWorld"]["main"] == '{\n\t\tSystem.out.println("Hello world");\n\t}'
 
 def test_parser_get_all_class_documentations(java_parser):
 	assert java_parser.get_all_class_documentations()['Animal'] == \
