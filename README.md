@@ -1,58 +1,34 @@
 # tree-hugger
-A light-weight, high level, universal code parser built on top of tree-sitter
+Mining source code repositories at scale easily. Tree-hugger is a light-weight, high level library which provides Pythonic APIs  to mine recursively trough Github repositories.
+Tree-hugger is built on top of tree-sitter and covers Python and PHP source code. Coming soon: Java ana d JavaScript.
 
-## System Requirement
+_System Requirement: Python 3.6_
 
-- Python 3.6
+## Contents
 
-## Browse the doc
+1. [Installation](#installation)
 
-1. [What is it?](#what-is-it)
+2. [Setup](#setup)
 
-2. [Why do I need it?](#why-do-i-need-it)
+3. [Hello world example](#hello-world-example)
 
-3. [Design Goals](#design-goals)
+4. [API reference](#api-reference)
 
-4. [Installation](#installation)
-
-5. [Building the .so Files](#building-the-so-files)
-
-6. [A Quick Example](#a-quick-example)
-
-7. [One or two words about extending](#one-or-two-words-about-extending)
+5. [Extending tree-hugger](#extending-tree-hugger)
   
-    - [Queries](#queries)
+    - [Adding languages](#adding-languages)
 
-    - [Parser Class](#parser-class)
+    - [Adding queries](#adding-queries)
 
-8. [Roadmap](#roadmap)
+6. [Roadmap](#roadmap)
 
 -------------
 
-
-
-## What is it?
-
-`tree-hugger` is a light weight wrapper around the excellent [`tree-sitter`](https://github.com/tree-sitter/tree-sitter) library and it's Python binding. You can use it to create your universal code parser and then easily mine through the data. 
-
-## Why do I need it?
-
-`tree-sitter` is a great universal code parser and does it's job without any problem and very very fast. But it is also pretty low-level. The Python binding makes you work with ugly looking `sexp` to run a query and get the result. It also does not support the NodeVisitor kind of features that are available in Python's native `ast` module.
-
-At [CodistAI](https://codist-ai.com) we have been using `tree-sitter` for some time now to create a language independent layer for our code analysis and code intelligence platform. While bulding that, we faced the pain as well. And we wrote some code to easily extend our platform to different languages. We believe some others may as well need to have the same higher level library to easily parse and gain insight about various different code files.
-
-## Design Goals
-
-- Light-weight
-- Extendable
-- Provides easy higher-level abstrctions
-- Normalization across languages (Coming soon!)
 
 ## Installation
 
 ### From pip:
 
-Just do
 ```
 pip install tree-hugger
 ```
@@ -71,7 +47,9 @@ _The installation process is tested in macOS Mojave, we have a [separate docker 
 
 _You may need to install libgit2. In case you are in mac just use `brew install libgit2`_
 
-## Building the .so files
+## Setup
+
+### Building the .so files
 
 _Please note that building the libraries has been tested under a macOS Mojave with Apple LLVM version 10.0.1 (clang-1001.0.46.4)_
 
@@ -101,19 +79,21 @@ optional arguments:
                         The name of the generated .so file
 ```
 
-## A Quick Example
+### Environment variables
+You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path and then the libary will use them automatically. Otherwise, as an alternative, you can pass it when creating any `Parser` object.
 
-First run the above command to generate the libraries. 
 
-In our settings we just use the `-c` flag to copy the generated `tree-sitter` library's `.so` file to our workspace.
-And once copied, we place it under a directory called `tslibs` (It is in the .gitignore). But of course, if you are using linux then this command probably won't work and you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file.
+## Hello world example
 
-Another thing that we need before we can analyze any code file is an yaml with queries. We have suuplied one example query file
-under [**queries**](https://raw.githubusercontent.com/autosoft-dev/tree-hugger/master/queries/example_queries.yml) directory. 
+1. **Generate the librairies** : run the above command to generate the libraries. 
 
-*Please note that, you can set up two environment variables `QUERY_FILE_PATH` and `TS_LIB_PATH` for the query file path and 
-tree-sitter lib path and then the libary will use them automatically. Otherwise, as an alternative, you can pass it when creating any `*Parser` object*
+    In our settings we use the `-c` flag to copy the generated `tree-sitter` library's `.so` file to our workspace. Once copied, we place it under a directory called `tslibs` (It is in the .gitignore).
+    
+    ⚠ If you are using linux then this command probably won't work and you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file.
 
+2. **Queries files** : We have supplied one example query file under [**queries**](https://raw.githubusercontent.com/autosoft-dev/tree-hugger/master/queries/example_queries.yml) directory. 
+
+3. **Setup environment variable** (optional)
 Assuming that you have the necessary environment variable setup. The following line of code will create a `PythonParser` object
 
 ```python
@@ -158,20 +138,43 @@ Out[5]:
 
  *(Notice that, in the last call, it only returns the functions which has a documentation comment)*
 
+## API reference
 
-## One or two words about extending
+| Domain      | Python        | PHP      |
+| ------------- |-------------|-------------|
+|Functions definition      | get_all_function_names  get_all_function_names_with_params| get_all_function_names  get_all_function_names_with_params |
+|Functions body      | get_all_function_bodies| get_all_function_bodies |
+|Functions documentation      | get_all_function_docstrings  get_all_function_documentations     | get_all_function_phpdocs  get_all_function_documentations|
+| Methods documentation | get_all_method_docstrings | get_all_method_phpdocs  |
+|Classes name     | get_all_class_method_names  get_all_class_names  | get_all_class_method_names |
+|Classes documentation      | get_all_class_docstrings   get_all_class_documentations    |      |
+   
+
+## Extending tree-hugger
 
 Extending tree-hugger for other languages and/or more functionalities for the already provided ones, is easy. 
 
-You need to understand that there are two main things here.
+1. ### Adding languages:
+Parsed languages can be extended through adding a parser class from the BaseParser class. The only mandatory argument that a Parser class should pass to the parent is the `language`. This is a string. Such as `python` (remember, lower case). Although, each parser class must have the options to take in the path of the tree-sitter library (.so file that we are using to parse the code) and the path to the queries yaml file, in their constructor.
 
-1. ### Queries: 
-Queries are s-expressions (Remember LISP?) that works on the parsed code and gives you what you want. They are a great way to fetch arbitary data from the parsed code without having to travel through it recursively. 
-Tree-hugger gives you a way to write your queries in yaml file (Check out the [queries/example_queries.yml](queries/example_queries.yml)) file to see some examples. 
+The BaseParser class can do few things for you.
 
-This file has a very simple structure. Each main section is named `<language>_queries` where `language` is the name of the language that you are writing queries on. In the case of the example file, it is `python`. 
+It loads and prepares the .so file with respect to the language you just mentioned.
 
-This main section  is further sub-divded into few (as many as you need, actually) sections. Each of them has the same structure. A name of a query followed by the query itself. Written as an s-expression. One example:
+It loads, parses, and prepares the query yaml file. (for the queries, we internally use an extended UserDict class. More on that later.)
+
+It gives an API to parse a file and prepare it for query. `BaseParser.parse_file`
+
+It also gives you another (most likely not to be exposed outside) API `_run_query_and_get_captures` which lets you run any queries and return back the matched results (if any) from the parsed tree.
+
+If you are interested to see the example of one of the methods in the PythonParser class, to know how all of these come together. Here it is (Do not forget, we use those APIs once we have called `parse_file` and parsed the file) -
+
+The function `match_from_span` is a very handy function. It is defined in the BaseParser module. It takes a span definition and returns the underlying code string from it.
+
+2. ### Adding queries: 
+Queries processed on source code are s-expressions (Remember LISP?) that work on the parsed code and gives you what you want. Tree-hugger gives you a way to write your queries in yaml file for each language parsed (Check out the [queries/example_queries.yml](queries/example_queries.yml)) file to see som examples for Python. 
+
+This main section  is further sub-divided into sections (as many as you need). Each of them has the same structure. A name of a query followed by the query itself. Written as an s-expression. One example:
 
 ```
 all_function_docstrings:
@@ -183,7 +186,7 @@ all_function_docstrings:
         )
         "
 ```
-Of course, you have to follow yaml grammar while writing these queries. You can see a bit more about writng these queries in the documentation of tree-sitter. [Here](https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries). Although it is not very intuitive to start with. We are planning to write a detailed tutorial on this subject. 
+You have to follow yaml grammar while writing these queries. You can see a bit more about writng these queries in the [documentation of tree-sitter](https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries). 
 
 Some example queries, that you will find in the yaml file (and their corresponding API from the PythonParser class) - 
 
@@ -195,57 +198,6 @@ Some example queries, that you will find in the yaml file (and their correspondi
 * all_class_methods => get_all_class_method_names()
 ```
 
-2. ### Parser Class:
-A parser class (such as PythonParser) extends from the BaseParser class. The only mandatory argument that a Parser class should pass to the parent is the `language`. This is a string. Such as `python` (remember, lower case). Although, each parser class must
-have the options to take in the path of the tree-sitter library (.so file that we are using to parse the code) and the path to the queries yaml file, in their constructor. As an example, for PythonParser - 
-
-```
-from tree_hugger.core.code_parser import BaseParser, match_from_span
-
-
-class PythonParser(BaseParser):
-  def __init__(self, library_loc: str=None, query_file_path: str=None):
-    super(PythonParser, self).__init__('python', 'python_quaries', library_loc, query_file_path)
-```
-
-As you can see, the BaseParser class needs a third (mandatory) argument, the name of the language. Each Parser class has the responsibility to pass that to the BaseParser class (as hard-coded string for the moment)
-
-The BaseParser class can do few things for you. 
-
-* It loads and prepares the .so file with respect to the language you just mentioned. 
-
-* It loads, parses, and prepares the query yaml file. (for the queries, we internally use an extended UserDict class. More on that later.)
-
-* It gives an API to parse a file and prepare it for query. `BaseParser.parse_file`
-
-* It also gives you another (most likely not to be exposed outside) API `_run_query_and_get_captures` which lets you run any queries and return back the matched results (if any) from the parsed tree. 
-
-If you are interested to see the example of one of the methods in the PythonParser class, to know how all of these come toghether. Here it is (Do not forget, we use those APIs once we have called `parse_file` and parsed the file) - 
-
-```
-def get_all_function_names(self) -> List:
-        """
-        Gets all function names from a file.
-
-        It excludes all the methods, i.e. functions defined inside a class
-        """
-
-        # First let us run the query. Mention the name of the query from yaml file and also pass in the root_node
-        # The root_node is already prepared for you once you had called the parse_file method beforehand
-        captures = self._run_query_and_get_captures('all_function_names', self.root_node)
-
-        # Now, with the returned captures, let's get the string representations using `match_from`span` 
-        all_funcs = set([match_from_span(n[0], self.splitted_code) for n in captures])
-
-        # This part here, uses another method from PythonParser class to get the name of all the class methods. 
-        methods = self.get_all_class_method_names()
-        all_methods = set([method_name  for key, value in methods.items() for method_name in value])
-
-        # Let's return the difference between the two sets.
-        return list(all_funcs - all_methods)
-```
-
-The function `match_from_span` is a very handy function. It is defined in the BaseParser module. It takes a span definition and returns the underlying code string from it.
 
 ## Roadmap
 
@@ -253,11 +205,11 @@ The function `match_from_span` is a very handy function. It is defined in the Ba
 
  * ~~Create pypi packages and make it installable via pip~~
 
- * Write more documentation
+ * Documentation: tutorial on queries writing
 
  * Write *Parser class for other languages
 
-| Languages        | Status-Finished           | Author  |
+| Languages     | Status-Finished           | Author  |
 | ------------- |:-------------:| -----:|
 | Python     | 40% | [Shubhadeep](https://github.com/rcshubhadeep) |
 | PHP      | 0%      |   NULL |
