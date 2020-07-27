@@ -89,7 +89,7 @@ You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path a
 
     In our settings we use the `-c` flag to copy the generated `tree-sitter` library's `.so` file to our workspace. Once copied, we place it under a directory called `tslibs` (It is in the .gitignore).
     
-    ⚠ If you are using linux then this command probably won't work and you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file.
+    ⚠ If you are using linux,you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file.
 
 2. **Setup environment variable** (optional)
 Assuming that you have the necessary environment variable setup. The following line of code will create a `PythonParser` object
@@ -153,26 +153,22 @@ Out[5]:
 Extending tree-hugger for other languages and/or more functionalities for the already provided ones, is easy. 
 
 1. ### Adding languages:
-Parsed languages can be extended through adding a parser class from the BaseParser class. The only mandatory argument that a Parser class should pass to the parent is the `language`. This is a string. Such as `python` (remember, lower case). Although, each parser class must have the options to take in the path of the tree-sitter library (.so file that we are using to parse the code) and the path to the queries yaml file, in their constructor.
+Parsed languages can be extended through adding a parser class from the BaseParser class. The only mandatory argument that a Parser class should pass to the parent is the `language`. This is a string. Such as `python` (lower case). Each parser class must have the options to take in the path of the tree-sitter library (.so file that we are using to parse the code) and the path to the queries yaml file, in their constructor.
 
-The BaseParser class can do few things for you.
-
-It loads and prepares the .so file with respect to the language you just mentioned.
-
-It loads, parses, and prepares the query yaml file. (for the queries, we internally use an extended UserDict class. More on that later.)
-
-It gives an API to parse a file and prepare it for query. `BaseParser.parse_file`
+The BaseParser class can do few things: 
+- Loading and preparing the .so file with respect to the language you just mentioned.
+- Loading, preparing and parsing the query yaml file. (for the queries, we internally use an extended UserDict class)
+- Providing an API to parse a file and prepare it for query. `BaseParser.parse_file`
 
 It also gives you another (most likely not to be exposed outside) API `_run_query_and_get_captures` which lets you run any queries and return back the matched results (if any) from the parsed tree.
 
-If you are interested to see the example of one of the methods in the PythonParser class, to know how all of these come together. Here it is (Do not forget, we use those APIs once we have called `parse_file` and parsed the file) -
+We use those APIs once we have called `parse_file` and parsed the file.
 
-The function `match_from_span` is a very handy function. It is defined in the BaseParser module. It takes a span definition and returns the underlying code string from it.
 
 2. ### Adding queries: 
-Queries processed on source code are s-expressions (Remember LISP?) that work on the parsed code and gives you what you want. Tree-hugger gives you a way to write your queries in yaml file for each language parsed.
+Queries processed on source code are s-expressions, they are listed in a `queries.yml`file for each parser class. Tree-hugger gives you a way to write your queries in yaml file for each language parsed.
 
-This main section  is further sub-divided into sections (as many as you need). Each of them has the same structure. A name of a query followed by the query itself. Written as an s-expression. One example:
+**Query structure**: A name of a query followed by the query itself. Written as an s-expression. *Example*:
 
 ```
 all_function_docstrings:
@@ -199,9 +195,6 @@ Some example queries, that you will find in the yaml file (and their correspondi
 
 ## Roadmap
 
- * Finish PythonParser
-
- * ~~Create pypi packages and make it installable via pip~~
 
  * Documentation: tutorial on queries writing
 
@@ -209,7 +202,7 @@ Some example queries, that you will find in the yaml file (and their correspondi
 
 | Languages     | Status-Finished           | Author  |
 | ------------- |:-------------:| -----:|
-| Python     | 40% | [Shubhadeep](https://github.com/rcshubhadeep) |
-| PHP      | 0%      |   NULL |
-| Java | 0%      |    NULL |
-| JavaScript | 0%      | NULL | 
+| Python     |✅  | [Shubhadeep](https://github.com/rcshubhadeep) |
+| PHP      | ✅    |   [Clément](https://github.com/CDluznie) |
+| Java | 0%      |     |
+| JavaScript | 0%      |  | 
