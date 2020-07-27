@@ -9,12 +9,14 @@ def java_parser():
 	return jp
 
 def test_get_all_method_names_with_params(java_parser):
-	assert java_parser.get_all_method_names_with_params()["main"] == [('arg', 'String[]')]
-	assert java_parser.get_all_method_names_with_params()["bark"] == [
+	assert set(java_parser.get_all_method_names_with_params().keys()) == {'HelloWorld', 'Animal', 'Dog'}
+	assert java_parser.get_all_method_names_with_params()["HelloWorld"]["main"] == [('arg', 'String[]')]
+	assert java_parser.get_all_method_names_with_params()["Dog"]["bark"] == [
         ('sound', 'String'),
         ('repeat', 'int')
     ]
-	assert java_parser.get_all_method_names_with_params()["move"] == []
+	assert java_parser.get_all_method_names_with_params()["Animal"]["move"] == []
+	assert java_parser.get_all_method_names_with_params()["Dog"]["move"] == []
 
 def test_parser_get_all_class_method_names(java_parser):
 	assert java_parser.get_all_class_method_names() == {
