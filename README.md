@@ -91,9 +91,7 @@ You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path a
     
     ⚠ If you are using linux then this command probably won't work and you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file.
 
-2. **Queries files** : We have supplied one example query file under [**queries**](https://raw.githubusercontent.com/autosoft-dev/tree-hugger/master/queries/example_queries.yml) directory. 
-
-3. **Setup environment variable** (optional)
+2. **Setup environment variable** (optional)
 Assuming that you have the necessary environment variable setup. The following line of code will create a `PythonParser` object
 
 ```python
@@ -172,7 +170,7 @@ If you are interested to see the example of one of the methods in the PythonPars
 The function `match_from_span` is a very handy function. It is defined in the BaseParser module. It takes a span definition and returns the underlying code string from it.
 
 2. ### Adding queries: 
-Queries processed on source code are s-expressions (Remember LISP?) that work on the parsed code and gives you what you want. Tree-hugger gives you a way to write your queries in yaml file for each language parsed (Check out the [queries/example_queries.yml](queries/example_queries.yml)) file to see som examples for Python. 
+Queries processed on source code are s-expressions (Remember LISP?) that work on the parsed code and gives you what you want. Tree-hugger gives you a way to write your queries in yaml file for each language parsed.
 
 This main section  is further sub-divided into sections (as many as you need). Each of them has the same structure. A name of a query followed by the query itself. Written as an s-expression. One example:
 
