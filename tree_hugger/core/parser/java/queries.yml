@@ -26,16 +26,36 @@ java_queries:
     all_method_names_and_params:
         "
         (
-            method_declaration
-            name: (identifier) @method.def
-            parameters: (formal_parameters) @medthod.params
+            
+            class_declaration
+            name: (identifier) @class.name
+        )
+
+        ( class_declaration
+            body: (
+                class_body (
+                    method_declaration
+                    name: (identifier) @method.name
+                    parameters: (formal_parameters) @medthod.params
+                )
+            )
         )
         "
     all_method_bodies:
         "
         (
-            method_declaration
-            name: (identifier) @method.name
-            body: (block) @method.code
+            
+            class_declaration
+            name: (identifier) @class.name
+        )
+
+        ( class_declaration
+            body: (
+                class_body (
+                    method_declaration
+                    name: (identifier) @method.name
+                    body: (block) @method.code
+                )
+            )
         )
         "

@@ -48,9 +48,16 @@ class JavaParser(BaseParser):
         captures = self._run_query_and_get_captures('all_method_bodies', self.root_node)
         
         method_bodies = {}
-        for i in range(0, len(captures), 2):
-            method_name = match_from_span(captures[i][0], self.splitted_code)
-            method_bodies[method_name] = match_from_span(captures[i+1][0], self.splitted_code)
+        i = 0
+        while i < len(captures):
+            if captures[i][1] == "class.name":
+                current_class = match_from_span(captures[i][0], self.splitted_code)
+                method_bodies[current_class] = {}
+                i += 1
+            elif captures[i][1] == "method.name":
+                method_name = match_from_span(captures[i][0], self.splitted_code)
+                method_bodies[current_class][method_name] = match_from_span(captures[i+1][0], self.splitted_code)
+                i += 2
 
         return method_bodies
     
@@ -60,31 +67,38 @@ class JavaParser(BaseParser):
         """
         captures = self._run_query_and_get_captures('all_method_names_and_params', self.root_node)
         ret_struct = {}
-        for i in range(0, len(captures), 2):
-            method_name = match_from_span(captures[i][0], self.splitted_code)
-            ret_struct[method_name] = []
-            for param in captures[i+1][0].children:
-                if param.type == "formal_parameter":
-                    name = match_from_span(
-                        param.child_by_field_name("name"),
-                        self.splitted_code
-                    )
-                    typ = match_from_span(
-                        param.child_by_field_name("type"),
-                        self.splitted_code
-                    )
-                elif param.type == "spread_parameter":
-                    name = match_from_span(
-                        param.children[2],
-                        self.splitted_code
-                    )
-                    typ = match_from_span(
-                        param.children[0],
-                        self.splitted_code
-                    )
-                else:
-                    continue
-                ret_struct[method_name].append((name,typ))
+        i = 0
+        while i < len(captures):
+            if captures[i][1] == "class.name":
+                current_class = match_from_span(captures[i][0], self.splitted_code)
+                ret_struct[current_class] = {}
+                i += 1
+            elif captures[i][1] == "method.name":
+                method_name = match_from_span(captures[i][0], self.splitted_code)
+                ret_struct[current_class][method_name] = []
+                for param in captures[i+1][0].children:
+                    if param.type == "formal_parameter":
+                        name = match_from_span(
+                            param.child_by_field_name("name"),
+                            self.splitted_code
+                        )
+                        typ = match_from_span(
+                            param.child_by_field_name("type"),
+                            self.splitted_code
+                        )
+                    elif param.type == "spread_parameter":
+                        name = match_from_span(
+                            param.children[2],
+                            self.splitted_code
+                        )
+                        typ = match_from_span(
+                            param.children[0],
+                            self.splitted_code
+                        )
+                    else:
+                        continue
+                    ret_struct[current_class][method_name].append((name,typ))
+                i += 2
         
         return ret_struct
 
