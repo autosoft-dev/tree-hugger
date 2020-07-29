@@ -122,7 +122,7 @@ class CPPParser(BaseParser):
             if i < len(n.children)-1 and n.children[i].type == "comment" and n.children[i+1].type == "class_specifier":
                 name = str(match_from_span(cursor.node.children[i+1].child_by_field_name("name"), lines))
                 documented[name] = str(match_from_span(cursor.node.children[i], lines))
-            self._walk_recursive_classdoc(n.children[i].walk(), lines, node_type, documented)
+            self._walk_recursive_classdoc(n.children[i].walk(), lines, documented)
     
     def _walk_recursive_functiondoc(self, cursor: TreeCursor, lines: List, documented: Dict):
         n = cursor.node
@@ -130,7 +130,7 @@ class CPPParser(BaseParser):
             if i < len(n.children)-1 and n.children[i].type == "comment" and n.children[i+1].type == "function_definition":
                 name = str(match_from_span(cursor.node.children[i+1].child_by_field_name("declarator").child_by_field_name("declarator"), lines))
                 documented[name] = str(match_from_span(cursor.node.children[i], lines))
-            self._walk_recursive_functiondoc(n.children[i].walk(), lines, node_type, documented)
+            self._walk_recursive_functiondoc(n.children[i].walk(), lines, documented)
 
     def get_all_function_commentdocs(self) -> Dict[str, str]:
         """
@@ -151,6 +151,14 @@ class CPPParser(BaseParser):
         """
         # TODO correct error : the comment of methods are also extracted
         return self.get_all_function_commentdocs()
+   
+    def get_all_class_commentdocs(self) -> Dict[str, str]:
+        """
+        Returns the comment docs of all classes
+        """
+        documentation = {}
+        self._walk_recursive_classdoc(self.root_node.walk(), self.splitted_code, documentation)
+        return documentation
    
     def get_all_class_documentations(self) -> Dict[str, str]:
         """

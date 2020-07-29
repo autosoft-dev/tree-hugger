@@ -29,7 +29,7 @@ int f(int x, float y[], int z = 5) {
 }
 
 int main(int argc, char *argv[]) {
-
+	return 0;
 }
 
 
@@ -53,3 +53,14 @@ public:
 	}
 
 };
+
+
+class Shape {
+	
+
+
+};
+
+void test() {
+
+}
