@@ -160,7 +160,7 @@ class PythonParser(BaseParser):
         """
         return self.get_all_method_docstrings()
     
-    def get_all_function_bodies(self, strip_docstr: bool=False) -> Dict:
+    def get_all_function_bodies(self, strip_docstr: bool=False, get_index: bool=False) -> Dict:
         """
         Returns a dict where function names are the key and the whole function code are the values
 
@@ -180,10 +180,10 @@ class PythonParser(BaseParser):
         for i in range(0, len(captures), 2):
             func_name = match_from_span(captures[i][0], self.splitted_code)
             if func_name in function_names:
-                pp[func_name] = match_from_span(captures[i+1][0], self.splitted_code)
+                pp[func_name] = match_from_span(captures[i+1][0], self.splitted_code), captures[i+1][0].start_point, captures[i+1][0].end_point
         
         if strip_docstr:
-            for k, v in pp.items():
+            for k, (v,sp,ep) in pp.items():
                 if func_and_docstr.get(k) is not None and func_and_docstr.get(k) is not '':
                     code = v.replace(func_and_docstr[k], "")
                     outer_indent = self._outer_indent(code)
@@ -196,11 +196,15 @@ class PythonParser(BaseParser):
                     outer_indent = self._outer_indent(v)
                     spaces = " ".join([''] * (outer_indent + 1))
                     ret_struct[k] = (f"def {k}{func_and_params[k]}:\n{spaces}{v}", "")
+                if get_index:
+                    ret_struct[k] = ret_struct[k],sp,ep
         else:
-            for k, v in pp.items():
+            for k, (v,sp,ep) in pp.items():
                 outer_indent = self._outer_indent(v)
                 spaces = " ".join([''] * (outer_indent + 1))
                 ret_struct[k] = f"def {k}{func_and_params[k]}:\n{spaces}{v}"
+                if get_index:
+                    ret_struct[k] = ret_struct[k],sp,ep
         return ret_struct
     
     def get_all_function_names_with_params(self):
