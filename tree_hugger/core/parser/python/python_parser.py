@@ -170,7 +170,7 @@ class PythonParser(BaseParser):
         be returned as a part of the function body or separately.
         """
         function_names = self.get_all_function_names()
-        func_and_params = self.function_names_with_params()
+        func_and_params = self.get_all_function_names_with_params()
         func_and_docstr = self.get_all_function_docstrings()
         
         captures = self._run_query_and_get_captures('all_function_bodies', self.root_node)
