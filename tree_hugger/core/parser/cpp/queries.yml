@@ -1,0 +1,42 @@
+cpp_queries:
+    all_function_names:
+        "
+        (
+            function_declarator
+            declarator: (identifier) @function.def
+        )
+        "
+    all_class_names:
+        "
+        (
+            class_specifier
+            name: (type_identifier) @class.def
+        )
+        "
+    all_class_methods:
+        "
+        (
+            
+            (class_specifier)  @class.name
+           
+        )
+        "
+    all_function_names_and_params:
+        "
+        (
+            function_declarator
+            declarator: (identifier) @function.def
+            parameters: (parameter_list) @func.params
+        )
+        "
+    all_function_bodies:
+        "
+        (
+            function_definition
+            declarator: (
+                function_declarator
+                declarator: (identifier) @function.def
+            )
+            body: (compound_statement) @function.code
+        )
+        "
