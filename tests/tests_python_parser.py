@@ -61,16 +61,7 @@ def test_parser_get_all_function_bodies(python_parser):
 		(22, 8),
 		(28, 29)
 	)
-
-def test_parser_get_all_function_docstrings(python_parser):
-	assert python_parser.get_all_function_docstrings()["second_child"] == \
-		'"""\n        This is second child\n        """'
-	assert python_parser.get_all_function_docstrings(get_index=True)["second_child"] == (
-		'"""\n        This is second child\n        """', 
-		(22, 8), 
-		(28, 29)
-	)
-		
+	
 def test_parser_get_all_function_documentations(python_parser):
 	assert python_parser.get_all_function_documentations() == {
 		'first_child': '"""\n        This is first child\n        """',

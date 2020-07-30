@@ -96,7 +96,7 @@ class PythonParser(BaseParser):
 
         return list(all_funcs - all_methods)
     
-    def get_all_function_docstrings(self, strip_quotes: bool=False, get_index: bool=False) -> Dict:
+    def get_all_function_docstrings(self, strip_quotes: bool=False) -> Dict:
         """
         Returns a dict where function names are the key and the documentationd are the values
 
@@ -114,8 +114,7 @@ class PythonParser(BaseParser):
                 ret_struct[func_name] = self._strip_py_doc_string(match_from_span(
                                                                   captures[i+1][0], self.splitted_code
                                                                   ), strip_quotes)
-                if get_index:
-                    ret_struct[func_name] = ret_struct[func_name], captures[i+1][0].start_point, captures[i+1][0].end_point
+                
         return ret_struct
         
     def get_all_function_documentations(self) -> Dict:
