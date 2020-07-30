@@ -1,6 +1,13 @@
 # tree-hugger
 Mining source code repositories at scale easily. Tree-hugger is a light-weight, high level library which provides Pythonic APIs  to mine recursively trough Github repositories.
-Tree-hugger is built on top of tree-sitter and covers Python and PHP source code. Coming soon: Java ana d JavaScript.
+Tree-hugger is built on top of tree-sitter.
+
+Covered languages:
+* Python
+* PHP
+* Java
+* JavaScript
+* C++ _(coming)_
 
 _System Requirement: Python 3.6_
 
@@ -138,14 +145,13 @@ Out[5]:
 
 ## API reference
 
-| Domain      | Python        | PHP      |
-| ------------- |-------------|-------------|
-|Functions definition      | get_all_function_names  get_all_function_names_with_params| get_all_function_names  get_all_function_names_with_params |
-|Functions body      | get_all_function_bodies| get_all_function_bodies |
-|Functions documentation      | get_all_function_docstrings  get_all_function_documentations     | get_all_function_phpdocs  get_all_function_documentations|
-| Methods documentation | get_all_method_docstrings | get_all_method_phpdocs  |
-|Classes name     | get_all_class_method_names  get_all_class_names  | get_all_class_method_names |
-|Classes documentation      | get_all_class_docstrings   get_all_class_documentations    |      |
+
+| Language      | Functions        | Methods      | Classes |
+| ------------- |-------------|-------------|-------------|
+| **Python**        |  all_function_names all_function_doctrings  all_function_names_and_params  all_function_bodies  |  all_class_methods  all_class_method_docstrings |  all_class_names  all_class_docstrings |
+| **PHP**           | all_function_names  all_function_names_and_params   all_function_bodies | all_class_methods  |  all_class_names |
+| **Java**          |   |  all_class_methods   all_method_names_and_params  all_method_bodies   |  all_class_names   |
+| **JavaScript**    | all_function_names  all_function_names_and_params  all_function_bodies  |  all_class_methods   |  all_class_names |
    
 
 ## Extending tree-hugger
@@ -201,8 +207,9 @@ Some example queries, that you will find in the yaml file (and their correspondi
  * Write *Parser class for other languages
 
 | Languages     | Status-Finished           | Author  |
-| ------------- |:-------------:| -----:|
+| ------------- |:-------------:| :-----:|
 | Python     |✅  | [Shubhadeep](https://github.com/rcshubhadeep) |
 | PHP      | ✅    |   [Clément](https://github.com/CDluznie) |
-| Java | 0%      |     |
-| JavaScript | 0%      |  | 
+| Java | ✅      |   [Clément](https://github.com/CDluznie)  |
+| JavaScript |✅    | [Clément](https://github.com/CDluznie) | 
+| C++ |  ▶ | [Clément](https://github.com/CDluznie)  |
