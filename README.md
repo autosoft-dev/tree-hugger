@@ -106,6 +106,7 @@ Assuming that you have the necessary environment variable setup. The following l
 # Python
 from tree_hugger.core import PythonParser
 pp = PythonParser()
+pp.parse_file("tests/assets/file_with_different_functions.py")
 pp.get_all_function_names()
 Out[4]:
 ['first_child', 'second_child', 'say_whee', 'wrapper', 'my_decorator', 'parent']
