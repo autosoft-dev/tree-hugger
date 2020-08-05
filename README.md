@@ -11,6 +11,7 @@ Covered languages:
 
 _System Requirement: Python 3.6_
 
+![Code mining at scale scheme - tree hugger](https://github.com/autosoft-dev/tree-hugger/blob/master/tree-hugger%20schema.PNG)
 ## Contents
 
 1. [Installation](#installation)
