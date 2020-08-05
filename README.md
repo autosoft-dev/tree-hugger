@@ -7,7 +7,7 @@ Covered languages:
 * PHP
 * Java
 * JavaScript
-* C++ _(coming)_
+* C++
 
 _System Requirement: Python 3.6_
 
@@ -99,49 +99,61 @@ You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path a
     ⚠ If you are using linux,you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file.
 
 2. **Setup environment variable** (optional)
-Assuming that you have the necessary environment variable setup. The following line of code will create a `PythonParser` object
+Assuming that you have the necessary environment variable setup. The following line of code will create a `Parser` object according to the language you want to analyse: 
 
+**Python**
 ```python
+# Python
 from tree_hugger.core import PythonParser
-
 pp = PythonParser()
-```
-
-And then you can pass in any Python file that you want to analyze, like so :
-
-```python
-pp.parse_file("tests/assets/file_with_different_functions.py")
-Out[3]: True
-```
-
-`parse_file` returns `True` if success
-
-And then you are free to use the methods exposed by that particular Parser object. As an example - 
-
-```python
 pp.get_all_function_names()
 Out[4]:
-['first_child',
- 'second_child',
- 'say_whee',
- 'wrapper',
- 'my_decorator',
- 'parent']
+['first_child', 'second_child', 'say_whee', 'wrapper', 'my_decorator', 'parent']
 ```
 
-OR
+**PHP**
+```Python 
+# PHP
+from tree_hugger.core import PHPParser
+phpp = PHPParser()
+phpp.parse_file("tests/assets/file_with_different_functions.php")
+phpp.get_all_function_names() 
+Out[5] :
+['foo', 'test', 'simple_params', 'variadic_param' ]
+```
 
+**Java**
 ```python
-pp.get_all_function_documentations()
-Out[5]:
-{'parent': '"""This is the parent function\n    \n    There are other lines in the doc string\n    This is the third line\n\n    And this is the fourth\n    """',
- 'first_child': "'''\n        This is first child\n        '''",
- 'second_child': '"""\n        This is second child\n        """',
- 'my_decorator': '"""\n    Outer decorator function\n    """',
- 'say_whee': '"""\n    Hellooooooooo\n\n    This is a function with decorators\n    """'}
- ```
+# Java 
+from tree_hugger.core import JavaParser
+jp = JavaParser()
+jp.parse_file("tests/assets/file_with_different_methods.java")
+jp.get_all_class_names() 
+Out[6] :
+['HelloWorld','Animal', 'Dog' ]
+```
 
- *(Notice that, in the last call, it only returns the functions which has a documentation comment)*
+**JavaScript**
+```python
+# JavaScript
+from tree_hugger.core import JavascriptParser
+jsp = JavascriptParser()
+jsp.parse_file("tests/assets/file_with_different_functions.js")
+jsp.get_all_function_names() 
+Out[7] :
+['test', 'utf8_to_b64',	'sum', 'multiply' ]
+```
+
+**C++**
+``` python
+from tree_hugger.core import CPPParser
+cp = CPPParser()
+cp.parse_file("tests/assets/file_with_different_functions.cpp")
+cp.get_all_function_names() 
+Out[8] :
+['foo', 'test', 'simple_params', 'variadic_param' ]
+```
+
 
 ## API reference
 
@@ -152,7 +164,9 @@ Out[5]:
 | **PHP**           | all_function_names  all_function_names_and_params   all_function_bodies | all_class_methods  |  all_class_names |
 | **Java**          |   |  all_class_methods   all_method_names_and_params  all_method_bodies   |  all_class_names   |
 | **JavaScript**    | all_function_names  all_function_names_and_params  all_function_bodies  |  all_class_methods   |  all_class_names |
-   
+| **C++**            |all_function_names  all_function_names_and_params  all_function_bodies  | all_class_methods    |   all_class_names  |
+
+ 
 
 ## Extending tree-hugger
 
@@ -211,5 +225,5 @@ Some example queries, that you will find in the yaml file (and their correspondi
 | Python     |✅  | [Shubhadeep](https://github.com/rcshubhadeep) |
 | PHP      | ✅    |   [Clément](https://github.com/CDluznie) |
 | Java | ✅      |   [Clément](https://github.com/CDluznie)  |
-| JavaScript |✅    | [Clément](https://github.com/CDluznie) | 
-| C++ |  ▶ | [Clément](https://github.com/CDluznie)  |
+| JavaScript |  ✅  | [Clément](https://github.com/CDluznie) | 
+| C++ |  ✅ | [Clément](https://github.com/CDluznie)  |
