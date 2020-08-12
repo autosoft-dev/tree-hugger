@@ -8,6 +8,16 @@ def python_parser():
 	pp.parse_file("tests/assets/file_with_different_functions.py")
 	return pp
 
+
+@pytest.fixture
+def python_parser_from_string():
+	pp = PythonParser()
+	with open("tests/assets/file_with_different_functions.py") as f:
+		code_blob = f.read()
+		pp.parse_code_as_string(code_blob)
+		return pp
+
+
 def test_parser_get_all_function_names(python_parser):
 	assert set(python_parser.get_all_function_names()) == set([
 		'wrapper', 
@@ -18,6 +28,19 @@ def test_parser_get_all_function_names(python_parser):
 		'say_whee',
 		'function_different_args'
 	])
+
+
+def test_parser_get_all_function_names_from_string_based_parsing(python_parser_from_string):
+	assert set(python_parser_from_string.get_all_function_names()) == set([
+		'wrapper', 
+		'parent', 
+		'first_child', 
+		'my_decorator', 
+		'second_child', 
+		'say_whee',
+		'function_different_args'
+	])
+
 	
 def test_get_all_function_names_with_params(python_parser):
 	assert python_parser.get_all_function_names_with_params()["function_different_args"] == [

@@ -75,6 +75,7 @@ class BaseParser(object):
         parse_code_as_string provides the same functions as parse_file but takes string blob as code 
         instead of a file location.
         """
+        
         try:
             self.raw_code = blob
             self.splitted_code = blob.decode('utf-8').split("\n")
@@ -83,8 +84,13 @@ class BaseParser(object):
             return True
         except UnicodeDecodeError:
             return False
+        except AttributeError:
+            self.raw_code = blob
+            self.splitted_code = blob.split("\n")
+            self.tree :Tree = self.parser.parse(bytes(blob.encode('utf-8')))
+            self.root_node :Node = self.tree.root_node
+            return True
 
-    
     def sexp(self):
         return self.tree.root_node.sexp()
     

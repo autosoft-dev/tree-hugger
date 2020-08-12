@@ -1,4 +1,6 @@
 from argparse import ArgumentParser
+from concurrent.futures import ProcessPoolExecutor
+import concurrent.futures
 import logging
 import os
 from pathlib import Path
@@ -39,6 +41,7 @@ def clone_repo(lang_name):
     """
     Clone the necessary repo
     """
+    logging.info(f"Cloneing {lang_name} repo from tree-sitter collections")
     if Path(repo_path(lang_name)).exists():
         shutil.rmtree(Path(repo_path(lang_name)))
     repo_url = f"{REPO_PREFIX}{lang_name}"
@@ -66,14 +69,28 @@ def make_tree_sitter_lib(args, lang_repo_list):
 def main():
     args = parser.parse_args()
     repo_arr = []
-    for lang_name in args.langs:
-        logging.info(f"Cloneing {lang_name} repo from tree-sitter collections")
-        ret = clone_repo(lang_name)
-        if ret:
-            logging.info("Clone success")
-            repo_arr.append(repo_path(lang_name))
-        else:
-            logging.error("Clone falied. Are you sure the language binding exists?")
+    ############################
+    ## This does not seem to work. Need to investigate. But we need to make this working in the parallel
+    ############################
+    max_workers = len(args.langs)
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        repo_downloaders = {executor.submit(clone_repo, lang_name): lang_name for lang_name in args.langs}
+        for future in concurrent.futures.as_completed(repo_downloaders):
+            try:
+                ret = future.result()
+            except Exception as exc:
+                logging.error('%r generated an exception: %s' % (repo_downloaders[future], exc))
+            else:
+                if ret:
+                    repo_arr.append(repo_path(repo_downloaders[future]))
+    # for lang_name in args.langs:
+    #     logging.info(f"Cloning {lang_name} repo from tree-sitter collections")
+    #     ret = clone_repo(lang_name)
+    #     if ret:
+    #         logging.info("Clone success")
+    #         repo_arr.append(repo_path(lang_name))
+    #     else:
+    #         logging.error("Clone falied. Are you sure the language binding exists?")
 
     if repo_arr:
         logging.info(f"Creating the library {args.lib_name} at {lib_path(args)}")
