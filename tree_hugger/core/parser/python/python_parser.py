@@ -161,6 +161,9 @@ class PythonParser(BaseParser):
         """
         return self.get_all_method_docstrings()
     
+    def _get_var_names_as_string_from_param_list(self, param_list):
+        return "(" + ", ".join([var_name for var_name, _, _ in param_list]) + ")"
+    
     def get_all_function_bodies(self, strip_docstr: bool=False, get_index: bool=False) -> Dict:
         """
         Returns a dict where function names are the key and the whole function code are the values
@@ -173,6 +176,7 @@ class PythonParser(BaseParser):
         function_names = self.get_all_function_names()
         func_and_params = self.get_all_function_names_with_params()
         func_and_docstr = self.get_all_function_docstrings()
+
         
         captures = self._run_query_and_get_captures('all_function_bodies', self.root_node)
         
@@ -190,20 +194,22 @@ class PythonParser(BaseParser):
                     outer_indent = self._outer_indent(code)
                     spaces = " ".join([''] * (outer_indent + 1))
                     if code.startswith("\n"):
-                        ret_struct[k] = (f"def {k}{func_and_params[k]}:{code}", func_and_docstr[k])
+                        ret_struct[k] = (f"def {k}{self._get_var_names_as_string_from_param_list(func_and_params[k])}:{code}", 
+                                         func_and_docstr[k])
                     else:
-                        ret_struct[k] = (f"def {k}{func_and_params[k]}:\n{spaces}{code}", func_and_docstr[k])
+                        ret_struct[k] = (f"def {k}{self._get_var_names_as_string_from_param_list(func_and_params[k])}:\n{spaces}{code}",
+                                         func_and_docstr[k])
                 else:
                     outer_indent = self._outer_indent(v)
                     spaces = " ".join([''] * (outer_indent + 1))
-                    ret_struct[k] = (f"def {k}{func_and_params[k]}:\n{spaces}{v}", "")
+                    ret_struct[k] = (f"def {k}{self._get_var_names_as_string_from_param_list(func_and_params[k])}:\n{spaces}{v}", "")
                 if get_index:
                     ret_struct[k] = ret_struct[k],sp,ep
         else:
             for k, (v,sp,ep) in pp.items():
                 outer_indent = self._outer_indent(v)
                 spaces = " ".join([''] * (outer_indent + 1))
-                ret_struct[k] = f"def {k}{func_and_params[k]}:\n{spaces}{v}"
+                ret_struct[k] = f"def {k}{self._get_var_names_as_string_from_param_list(func_and_params[k])}:\n{spaces}{v}"
                 if get_index:
                     ret_struct[k] = ret_struct[k],sp,ep
         return ret_struct
