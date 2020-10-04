@@ -69,9 +69,7 @@ def make_tree_sitter_lib(args, lang_repo_list):
 def main():
     args = parser.parse_args()
     repo_arr = []
-    ############################
-    ## This does not seem to work. Need to investigate. But we need to make this working in the parallel
-    ############################
+
     max_workers = len(args.langs)
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         repo_downloaders = {executor.submit(clone_repo, lang_name): lang_name for lang_name in args.langs}
@@ -83,15 +81,6 @@ def main():
             else:
                 if ret:
                     repo_arr.append(repo_path(repo_downloaders[future]))
-    # for lang_name in args.langs:
-    #     logging.info(f"Cloning {lang_name} repo from tree-sitter collections")
-    #     ret = clone_repo(lang_name)
-    #     if ret:
-    #         logging.info("Clone success")
-    #         repo_arr.append(repo_path(lang_name))
-    #     else:
-    #         logging.error("Clone falied. Are you sure the language binding exists?")
-
     if repo_arr:
         logging.info(f"Creating the library {args.lib_name} at {lib_path(args)}")
         ret = make_tree_sitter_lib(args, repo_arr)

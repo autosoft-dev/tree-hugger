@@ -27,6 +27,7 @@ version="0.8.3",
 packages=find_packages(exclude=("tests",)),
 install_requires=["tree-sitter", "pygit2", "pytest", "PyYAML"],
 entry_points = {
-    'console_scripts': ['create_libs=tree_hugger.cli.create_libs:main'],
+    'console_scripts': ['create_libs=tree_hugger.cli.create_libs:main',
+                        'download_libs=tree_hugger.cli.download_libs:main'],
 },
 )

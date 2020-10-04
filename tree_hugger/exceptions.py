@@ -8,3 +8,7 @@ class QueryFileNotFoundError(Exception):
 
 class SourceFileNotFoundError(Exception):
     pass
+
+
+class OSNotSupported(Exception):
+    pass
