@@ -8,6 +8,7 @@ from tree_hugger.exceptions import OSNotSupported
 import tree_hugger.setup_logging
 
 ALLOWED_OS = ["linux", "darwin"]
+ALLOWED_OS_HUMAN_READABLE = {"linux": "Linux", "darwin": "MacOS"}
 
 is_in_allowed_os = lambda x: x in ALLOWED_OS
 
@@ -43,6 +44,6 @@ def main():
     if not is_in_allowed_os(_which_os()):
         raise OSNotSupported(f"Sorry! Your OS '{_which_os()}' is not supported yet.")
 
-    logging.info(f"Downloading .so files for '{_which_os()}' version")
+    logging.info(f"Downloading .so files for '{ALLOWED_OS_HUMAN_READABLE[_which_os()]}' version")
     _download_lib_to_local(_which_os(), args.local_file_name)
     logging.info(f".so library saved to {args.local_file_name}.")
