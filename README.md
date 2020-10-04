@@ -4,8 +4,9 @@
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 
 # tree-hugger
-Mining source code repositories at scale easily. Tree-hugger is a light-weight, high level library which provides Pythonic APIs  to mine recursively trough Github repositories.
-Tree-hugger is built on top of tree-sitter.
+Mine source code repositories at scale. Easily. Tree-hugger is a light-weight, high level library which provides Pythonic APIs  to mine trough Git repositories (it works on any collection of python files, actually).
+
+Tree-hugger is built on top of [tree-sitter](https://tree-sitter.github.io/tree-sitter/).
 
 Covered languages:
 * Python
@@ -16,7 +17,7 @@ Covered languages:
 
 _System Requirement: Python 3.6_
 
-![Code mining at scale scheme - tree hugger](https://github.com/autosoft-dev/tree-hugger/blob/master/tree-hugger%20schema.PNG)
+![Code mining at scale - tree hugger](https://github.com/autosoft-dev/tree-hugger/blob/master/tree-hugger%20schema.PNG)
 ## Contents
 
 1. [Installation](#installation)
@@ -61,6 +62,30 @@ _The installation process is tested in macOS Mojave, we have a [separate docker 
 _You may need to install libgit2. In case you are in mac just use `brew install libgit2`_
 
 ## Setup
+
+### Getting your .so files
+
+From onwards tree-hugger 0.9 we ship a new command `download_libs`.
+
+If you are working on Debian based Linux or Newer version of MacOS then you should probably just use this command to get the library. At any point of time we will maintain a .so file for both those OSs with all the supported languages in it. 
+
+To get the .so file for your platform you can simply do the following 
+
+```
+download_libs
+```
+
+Here is the full usage guide of the command
+
+```
+usage: download_libs [-h] [--local_file_name LOCAL_FILE_NAME]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --local_file_name LOCAL_FILE_NAME
+                        The local file where you want to save the library.
+                        Default - my-languages.so
+```
 
 ### Building the .so files
 
