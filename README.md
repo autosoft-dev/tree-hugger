@@ -1,5 +1,7 @@
 [![Downloads](https://pepy.tech/badge/tree-hugger)](https://pepy.tech/project/tree-hugger)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+![Python 3.7](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-370/)
 
 # tree-hugger
 Mining source code repositories at scale easily. Tree-hugger is a light-weight, high level library which provides Pythonic APIs  to mine recursively trough Github repositories.
