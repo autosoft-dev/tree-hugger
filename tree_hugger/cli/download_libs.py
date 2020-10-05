@@ -1,11 +1,12 @@
 from argparse import ArgumentParser
-import platform
+
 import logging
 
 import requests
 
 from tree_hugger.exceptions import OSNotSupported
 import tree_hugger.setup_logging
+from tree_hugger.cli.os_detector import _which_os
 
 ALLOWED_OS = ["linux", "darwin"]
 ALLOWED_OS_HUMAN_READABLE = {"linux": "Linux", "darwin": "MacOS"}
@@ -27,11 +28,6 @@ def _download_lib_to_local(os_type, local_file_name):
             for chunk in r.iter_content(block_size):
                 f.write(chunk)
     return True
-
-
-
-def _which_os():
-    return platform.system().lower()
 
 
 def main():

@@ -8,12 +8,13 @@ import shutil
 
 import pygit2
 from tree_sitter import Language
+from tree_hugger.cli.os_detector import _which_os
 
 import tree_hugger.setup_logging
 
 
 REPO_PREFIX = 'https://github.com/tree-sitter/tree-sitter-'
-TEMP_DOWNLOAD_PATH = "/tmp/tree-sitter-repos"
+TEMP_DOWNLOAD_PATH = "/tmp/tree-sitter-repos" if _which_os() in ["linux", "darwin"] else "vendors"
 
 parser = ArgumentParser()
 parser.add_argument("langs",
