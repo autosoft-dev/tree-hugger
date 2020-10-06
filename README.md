@@ -127,7 +127,7 @@ You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path a
 
     In our settings we use the `-c` flag to copy the generated `tree-sitter` library's `.so` file to our workspace. Once copied, we place it under a directory called `tslibs` (It is in the .gitignore).
     
-    ⚠ If you are using linux,you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file.
+    ⚠ If you are using linux,you will need to use our [tree-sitter-docker](https://github.com/autosoft-dev/tree-sitter-docker) image and manually copy the final .so file. Unless you are in a debian based distro and in that case you should probably use our pre-compiled version via `download_libs` command as described above
 
 2. **Setup environment variable** (optional)
 Assuming that you have the necessary environment variable setup. The following line of code will create a `Parser` object according to the language you want to analyse: 
