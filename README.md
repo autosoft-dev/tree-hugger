@@ -268,4 +268,4 @@ Some example queries, that you will find in the yaml file (and their correspondi
 | C++ |  ✅ | [Clément](https://github.com/CDluznie)  |
 
 
-If you are using tree-hugger in your project, please consider putting [![parssr: tree-hugger](https://img.shields.io/badge/parser-tree--hugger-lightgrey)](https://github.com/autosoft-dev/tree-hugger/)
+If you are using tree-hugger in your project, please consider putting [![parssr: tree-hugger](https://img.shields.io/badge/parser-tree--hugger-lightgrey)](https://github.com/autosoft-dev/tree-hugger/) in your prject :)
