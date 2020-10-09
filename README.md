@@ -18,6 +18,10 @@ Covered languages:
 _System Requirement: Python 3.6_
 
 ![Code mining at scale - tree hugger](https://github.com/autosoft-dev/tree-hugger/blob/master/tree-hugger%20schema.PNG)
+
+We have a notebook to get you starting.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/autosoft-dev/tree-hugger/blob/master/notebooks/Using_tree_hugger_to_Enhance_CodeXGLUE.ipynb)
 ## Contents
 
 1. [Installation](#installation)
@@ -122,6 +126,7 @@ You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path a
 
 
 ## Hello world example
+
 
 1. **Generate the librairies** : run the above command to generate the libraries. 
 
