@@ -3,6 +3,9 @@
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 
+![Code mining at scale - tree hugger](https://github.com/autosoft-dev/tree-hugger/blob/master/tree-hugger%20schema.PNG)
+
+
 # tree-hugger
 Mine source code repositories at scale. Easily. Tree-hugger is a light-weight, high level library which provides Pythonic APIs  to mine trough Git repositories (it works on any collection of supported code files, actually).
 
@@ -16,8 +19,6 @@ Covered languages:
 * C++
 
 _System Requirement: Python 3.6_
-
-![Code mining at scale - tree hugger](https://github.com/autosoft-dev/tree-hugger/blob/master/tree-hugger%20schema.PNG)
 
 We have a notebook to get you starting.
 
