@@ -50,7 +50,7 @@ We have a notebook to get you starting.
 ### From pip:
 
 ```
-pip install tree-hugger
+pip install -U tree-hugger PyYAML
 ```
 
 ### From Source:
