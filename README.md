@@ -5,6 +5,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+[![PyPI version](https://badge.fury.io/py/tree-hugger.svg)](https://badge.fury.io/py/tree-hugger)
 ![](build_badges/macpass.svg)
 ![](build_badges/linuxpass.svg)
 ![](build_badges/windowsfail.svg)
