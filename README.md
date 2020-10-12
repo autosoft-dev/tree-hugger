@@ -5,6 +5,9 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+![](build_badges/macpass.svg)
+![](build_badges/linuxpass.svg)
+![](build_badges/windowsfail.svg)
 
 
 # tree-hugger
@@ -50,7 +53,7 @@ We have a notebook to get you starting.
 ### From pip:
 
 ```
-pip install tree-hugger
+pip install -U tree-hugger PyYAML
 ```
 
 ### From Source:
@@ -266,3 +269,6 @@ Some example queries, that you will find in the yaml file (and their correspondi
 | Java | ✅      |   [Clément](https://github.com/CDluznie)  |
 | JavaScript |  ✅  | [Clément](https://github.com/CDluznie) | 
 | C++ |  ✅ | [Clément](https://github.com/CDluznie)  |
+
+
+If you are using tree-hugger in your project, please consider putting [![parssr: tree-hugger](https://img.shields.io/badge/parser-tree--hugger-lightgrey)](https://github.com/autosoft-dev/tree-hugger/) in your prject :)
