@@ -1,0 +1,35 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build-and-test:
+    executor: python/default
+    steps:
+      - checkout
+      - python/load-cache
+      - python/save-cache
+      - run:
+          command: |
+            sudo apt-get install cmake
+            wget https://github.com/libgit2/libgit2/releases/download/v0.28.5/libgit2-0.28.5.tar.gz
+            tar xzf libgit2-0.28.5.tar.gz
+            cd libgit2-0.28.5/
+            cmake .
+            make
+            sudo make install
+            cd ..
+            rm -rf libgit2-0.28.5 libgit2-0.28.5.tar.gz
+            wget https://tree-hugger-libs.s3.amazonaws.com/py_php_js_cpp_java_linux_64.so
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            ./run_tests.sh
+          name: Test
+          environment:
+            TS_LIB_PATH: /home/circleci/project/py_php_js_cpp_java_linux_64.so
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
