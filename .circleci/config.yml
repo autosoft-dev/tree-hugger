@@ -10,8 +10,6 @@ jobs:
       - checkout
       - python/load-cache
       - python/save-cache
-    environment:
-      TS_LIB_PATH: /home/circleci/project/py_php_js_cpp_java_linux_64.so
       - run:
           command: |
             sudo apt-get install cmake
@@ -28,6 +26,8 @@ jobs:
             pip install -r requirements.txt
             ./run_tests.sh
           name: Test
+          environment:
+            TS_LIB_PATH: /home/circleci/project/py_php_js_cpp_java_linux_64.so
 
 workflows:
   main:
