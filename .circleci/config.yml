@@ -10,6 +10,8 @@ jobs:
       - checkout
       - python/load-cache
       - python/save-cache
+    environment:
+      TS_LIB_PATH: /home/circleci/project/py_php_js_cpp_java_linux_64.so
       - run:
           command: |
             sudo apt-get install cmake
@@ -22,7 +24,6 @@ jobs:
             cd ..
             rm -rf libgit2-0.28.5 libgit2-0.28.5.tar.gz
             wget https://tree-hugger-libs.s3.amazonaws.com/py_php_js_cpp_java_linux_64.so
-            echo 'export TS_LIB_PATH=py_php_js_cpp_java_linux_64.so'
             pip install --upgrade pip
             pip install -r requirements.txt
             ./run_tests.sh
