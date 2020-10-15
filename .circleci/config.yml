@@ -19,6 +19,7 @@ jobs:
             cmake .
             make
             sudo make install
+            cd ..
             rm -rf libgit2-0.28.5 libgit2-0.28.5.tar.gz
             pip install --upgrade pip
             pip install -r requirements.txt
