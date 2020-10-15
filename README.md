@@ -11,7 +11,7 @@
 ![](build_badges/windowsfail.svg)
 
 
-![](logo/th-logo.png) for people in a hurry :)
+![](logo/th-logo.png) **For People in a Hurry :)**
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/autosoft-dev/tree-hugger/blob/master/notebooks/Using_tree_hugger_to_Enhance_CodeXGLUE.ipynb)
 
