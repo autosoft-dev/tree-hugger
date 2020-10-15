@@ -13,7 +13,7 @@
 
 ## tree-hugger for people in a hurry :)
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/autosoft-dev/tree-hugger/blob/master/notebooks/Using_tree_hugger_to_Enhance_CodeXGLUE.ipynb)
+[![th_logo](logo/th-logo.png)](https://colab.research.google.com/github/autosoft-dev/tree-hugger/blob/master/notebooks/Using_tree_hugger_to_Enhance_CodeXGLUE.ipynb)
 
 # tree-hugger
 Mine source code repositories at scale. Easily. Tree-hugger is a light-weight, high level library which provides Pythonic APIs  to mine trough Git repositories (it works on any collection of supported code files, actually).
