@@ -11,7 +11,7 @@
 ![](build_badges/windowsfail.svg)
 
 
-## <img src="logo/th-logo.png" alt="drawing" height="20", width="20"/> for people in a hurry :)
+<img src="logo/th-logo.png" alt="drawing" height="20", width="20"/> for people in a hurry :)
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/autosoft-dev/tree-hugger/blob/master/notebooks/Using_tree_hugger_to_Enhance_CodeXGLUE.ipynb)
 
