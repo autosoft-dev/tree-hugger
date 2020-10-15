@@ -9,7 +9,7 @@
 ![](build_badges/macpass.svg)
 ![](build_badges/linuxpass.svg)
 ![](build_badges/windowsfail.svg)
-[![autosoft-dev](https://circleci.com/gh/autosoft-dev/tree-hugger.svg?style=svg)](https://github.com/autosoft-dev/tree-hugger)
+[![autosoft-dev](https://circleci.com/gh/autosoft-dev/tree-hugger.svg?style=svg)](https://app.circleci.com/pipelines/github/autosoft-dev/tree-hugger)
 
 
 ![](logo/th-logo.png) **For People in a Hurry :)**
