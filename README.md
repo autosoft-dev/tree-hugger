@@ -50,8 +50,6 @@ _System Requirement: Python 3.6_
 
 </details>
 
--------------
-
 
 ## Installation
 
