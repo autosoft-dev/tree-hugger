@@ -32,21 +32,23 @@ _System Requirement: Python 3.6_
 
 ## Contents
 
-1. [Installation](#installation)
+<details>
+  <summary>Table of contents</summary>
 
-2. [Setup](#setup)
+---
 
-3. [Hello world example](#hello-world-example)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Hello world example](#hello-world-example)
+- [API reference](#api-reference)
+- [Extending tree-hugger](#extending-tree-hugger)
+  - [Adding languages](#adding-languages)
+  - [Adding queries](#adding-queries)
+- [Roadmap](#roadmap)
 
-4. [API reference](#api-reference)
+---
 
-5. [Extending tree-hugger](#extending-tree-hugger)
-  
-    - [Adding languages](#adding-languages)
-
-    - [Adding queries](#adding-queries)
-
-6. [Roadmap](#roadmap)
+</details>
 
 -------------
 
