@@ -205,7 +205,7 @@ Out[8] :
 
 | Language      | Functions        | Methods      | Classes |
 | ------------- |-------------|-------------|-------------|
-| **Python**        |  all_function_names all_function_doctrings  all_function_names_and_params  all_function_bodies  |  all_class_methods  all_class_method_docstrings |  all_class_names  all_class_docstrings |
+| **Python**        |  all_function_names all_function_doctrings  all_function_names_and_params  all_function_bodies  |  all_class_methods  all_class_method_docstrings  all_class_method_bodies  |  all_class_names  all_class_docstrings |
 | **PHP**           | all_function_names  all_function_names_and_params   all_function_bodies | all_class_methods  |  all_class_names |
 | **Java**          |   |  all_class_methods   all_method_names_and_params  all_method_bodies   |  all_class_names   |
 | **JavaScript**    | all_function_names  all_function_names_and_params  all_function_bodies  |  all_class_methods   |  all_class_names |
