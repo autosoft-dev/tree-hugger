@@ -205,11 +205,11 @@ Out[8] :
 
 | Language      | Functions        | Methods      | Classes |
 | ------------- |-------------|-------------|-------------|
-| **Python**        |  all_function_names all_function_doctrings  all_function_names_and_params  all_function_bodies  |  all_class_methods  all_class_method_docstrings  all_class_method_bodies  |  all_class_names  all_class_docstrings |
-| **PHP**           | all_function_names  all_function_names_and_params   all_function_bodies | all_class_methods  |  all_class_names |
-| **Java**          |   |  all_class_methods   all_method_names_and_params  all_method_bodies   |  all_class_names   |
-| **JavaScript**    | all_function_names  all_function_names_and_params  all_function_bodies  |  all_class_methods   |  all_class_names |
-| **C++**            |all_function_names  all_function_names_and_params  all_function_bodies  | all_class_methods    |   all_class_names  |
+| **Python**        |  get_all_function_names get_all_function_doctrings  get_all_function_names_and_params  get_all_function_bodies  |  get_all_class_methods  get_all_class_method_docstrings  get_all_class_method_bodies  |  get_all_class_names  get_all_class_docstrings |
+| **PHP**           | get_all_function_names  get_all_function_names_and_params   get_all_function_bodies | get_all_class_methods  |  get_all_class_names |
+| **Java**          |   |  get_all_class_methods   get_all_method_names_and_params  get_all_method_bodies   |  get_all_class_names   |
+| **JavaScript**    | get_all_function_names  get_all_function_names_and_params  get_all_function_bodies  |  get_all_class_methods   |  get_all_class_names |
+| **C++**            | get_all_function_names  get_all_function_names_and_params  get_all_function_bodies  | get_all_class_methods    |   get_all_class_names  |
 
  
 
