@@ -66,7 +66,8 @@ def test_parser_get_all_class_method_names(python_parser):
 			'scan'
 		], 
 		'AnotherClass': [
-			'__init__'
+			'__init__',
+			'get_class_name'
 		]
 	}
 
@@ -86,6 +87,22 @@ def test_parser_get_all_function_bodies(python_parser):
 	)
 	assert python_parser.get_all_function_bodies()["function_different_args"] == \
 		'def function_different_args(foo, bar, no, pi, opt_typed):\n    return 0'
+
+def test_parser_get_all_method_bodies(python_parser):
+	assert python_parser.get_all_class_method_bodies()['BaseClass']["get_name"] == \
+		"def get_name(self):\n        '''Get the name parameter\n        '''\n        return self.name"
+	assert python_parser.get_all_class_method_bodies(get_index=True)['BaseClass']["get_name"] ==(
+		"def get_name(self):\n        '''Get the name parameter\n        '''\n        return self.name",
+   		(75, 8),
+   		(77, 24)
+	)
+	assert python_parser.get_all_class_method_bodies(get_index=True, strip_docstr=True)['BaseClass']["get_name"] == (
+		('def get_name(self):\n        return self.name',
+    	"'''Get the name parameter\n        '''"),
+   		(75, 8),
+   		(77, 24)
+	)
+
 	
 def test_parser_get_all_function_documentations(python_parser):
 	assert python_parser.get_all_function_documentations() == {
@@ -98,11 +115,11 @@ def test_parser_get_all_function_documentations(python_parser):
 def test_parser_walk(python_parser):
 	l = []
 	python_parser.walk(lambda node: l.append(1) if node.type == "function_definition" else l.append(0))
-	assert sum(l) == 12
+	assert sum(l) == 13
 
 def test_parser_reduction(python_parser):
 	assert python_parser.reduction(
 	    lambda node,acc: acc+1 if node.type == "function_definition" else acc, 0
-	) == 12
+	) == 13
 	
 

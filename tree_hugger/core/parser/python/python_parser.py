@@ -64,7 +64,7 @@ class PythonParser(BaseParser):
         return min(spaces_arr) if spaces_arr else 4
 
     
-    def get_all_class_method_names(self) -> List:
+    def get_all_class_method_names(self) -> Dict:
         """
         Gets all the method names from a file. 
 
@@ -163,6 +163,63 @@ class PythonParser(BaseParser):
     
     def _get_var_names_as_string_from_param_list(self, param_list):
         return "(" + ", ".join([var_name for var_name, _, _ in param_list]) + ")"
+    
+    def get_all_class_method_bodies(self, strip_docstr: bool=False, get_index: bool=False) -> Dict:
+        class_method_names = self.get_all_class_method_names()
+        methods_and_params = self.get_all_function_names_with_params()
+        method_and_docstr = self.get_all_method_docstrings()
+
+        captures = self._run_query_and_get_captures('all_function_bodies', self.root_node)
+
+        ret_struct = {}
+        pp = {}
+
+        for i in range(0, len(captures), 2):
+            func_name = match_from_span(captures[i][0], self.splitted_code)
+            for class_name, method_name_list in class_method_names.items():
+                if func_name in method_name_list and (func_name != "__init__" and func_name != "__new__"):
+                    if pp.get(class_name) is None:
+                        pp[class_name] = {}
+                        pp[class_name] = {func_name: 
+                                          (match_from_span(captures[i+1][0], self.splitted_code), captures[i+1][0].start_point, captures[i+1][0].end_point)
+                                          }
+                    else:
+                        if func_name != "__init__" and func_name != "__new__":
+                            pp[class_name][func_name] =  (match_from_span(captures[i+1][0], self.splitted_code), captures[i+1][0].start_point, captures[i+1][0].end_point)
+
+        if strip_docstr:
+            for class_name, func_data_struct in pp.items():
+                ret_struct[class_name] = {}
+                for k, (v,sp,ep) in func_data_struct.items():
+                    if method_and_docstr[class_name].get(k) is not None and method_and_docstr[class_name].get(k) is not '':
+                        code = v.replace(method_and_docstr[class_name][k], "")
+                        outer_indent = self._outer_indent(code)
+                        spaces = " ".join([''] * (outer_indent + 1))
+                        if code.startswith("\n"):
+                            ret_struct[class_name][k] = (f"def {k}{self._get_var_names_as_string_from_param_list(methods_and_params[k])}:{code}", 
+                                                         method_and_docstr[class_name][k])
+                        else:
+                            ret_struct[class_name][k] = (f"def {k}{self._get_var_names_as_string_from_param_list(methods_and_params[k])}:\n{spaces}{code}",
+                                                         method_and_docstr[class_name][k])
+                    else:
+                        outer_indent = self._outer_indent(v)
+                        spaces = " ".join([''] * (outer_indent + 1))
+                        ret_struct[class_name][k] = (f"def {k}{self._get_var_names_as_string_from_param_list(methods_and_params[k])}:\n{spaces}{v}", "")
+                    if get_index:
+                        ret_struct[class_name][k] = ret_struct[class_name][k],sp,ep
+        else:
+            for class_name, func_data_struct in pp.items():
+                for k, (v,sp,ep) in func_data_struct.items():
+                    outer_indent = self._outer_indent(v)
+                    spaces = " ".join([''] * (outer_indent + 1))
+                    if ret_struct.get(class_name) is None:
+                        ret_struct[class_name] = {}
+                        ret_struct[class_name][k] = f"def {k}{self._get_var_names_as_string_from_param_list(methods_and_params[k])}:\n{spaces}{v}"
+                    else:
+                        ret_struct[class_name][k] = f"def {k}{self._get_var_names_as_string_from_param_list(methods_and_params[k])}:\n{spaces}{v}"
+                    if get_index:
+                        ret_struct[class_name][k] = (ret_struct[class_name][k], sp, ep)
+        return ret_struct
     
     def get_all_function_bodies(self, strip_docstr: bool=False, get_index: bool=False) -> Dict:
         """

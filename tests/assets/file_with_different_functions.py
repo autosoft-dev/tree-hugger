@@ -91,3 +91,6 @@ class AnotherClass(BaseClass):
     def __init__(self):
         super(AnotherClass, self).__init__(12)
         self.name = "AnotherClass"
+    
+    def get_class_name(self):
+        return self.name
