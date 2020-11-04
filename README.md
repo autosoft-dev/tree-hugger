@@ -1,7 +1,7 @@
 
 ![Code mining at scale - tree hugger](https://github.com/autosoft-dev/tree-hugger/blob/master/tree-hugger%20schema.PNG)
 
-[![Downloads](https://static.pepy.tech/personalized-badge/tree-hugger?period=total&units=international_system&left_color=black&right_color=brightgreen&left_text=Downloads)](https://pepy.tech/project/tree-hugger)
+[![Downloads](https://pepy.tech/badge/tree-hugger)](https://pepy.tech/project/tree-hugger)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Support Python Version](https://img.shields.io/badge/python-3.6%7C3.7%7C3.8-brightgreen)](https://pypi.org/project/tree-hugger/)
 [![PyPI version](https://badge.fury.io/py/tree-hugger.svg)](https://badge.fury.io/py/tree-hugger)
@@ -32,23 +32,23 @@ _System Requirement: Python 3.6_
 
 ## Contents
 
-1. [Installation](#installation)
+<details>
+  <summary>Table of contents</summary>
 
-2. [Setup](#setup)
+---
 
-3. [Hello world example](#hello-world-example)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Hello world example](#hello-world-example)
+- [API reference](#api-reference)
+- [Extending tree-hugger](#extending-tree-hugger)
+  - [Adding languages](#adding-languages)
+  - [Adding queries](#adding-queries)
+- [Roadmap](#roadmap)
 
-4. [API reference](#api-reference)
+---
 
-5. [Extending tree-hugger](#extending-tree-hugger)
-  
-    - [Adding languages](#adding-languages)
-
-    - [Adding queries](#adding-queries)
-
-6. [Roadmap](#roadmap)
-
--------------
+</details>
 
 
 ## Installation
