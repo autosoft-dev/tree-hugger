@@ -205,11 +205,11 @@ Out[8] :
 
 | Language      | Functions        | Methods      | Classes |
 | ------------- |-------------|-------------|-------------|
-| **Python**        |  get_all_function_names get_all_function_doctrings  get_all_function_names_and_params  get_all_function_bodies  |  get_all_class_methods  get_all_class_method_docstrings  get_all_class_method_bodies  |  get_all_class_names  get_all_class_docstrings |
-| **PHP**           | get_all_function_names  get_all_function_names_and_params   get_all_function_bodies | get_all_class_methods  |  get_all_class_names |
-| **Java**          |   |  get_all_class_methods   get_all_method_names_and_params  get_all_method_bodies   |  get_all_class_names   |
-| **JavaScript**    | get_all_function_names  get_all_function_names_and_params  get_all_function_bodies  |  get_all_class_methods   |  get_all_class_names |
-| **C++**            | get_all_function_names  get_all_function_names_and_params  get_all_function_bodies  | get_all_class_methods    |   get_all_class_names  |
+| **Python**        |  get_all_function_names get_all_function_doctrings  get_all_function_names_and_params  get_all_function_bodies  |  get_all_class_method_names  get_all_method_docstrings  get_all_method_documentations  get_all_class_method_bodies  |  get_all_class_names  get_all_class_docstrings |
+| **PHP**           | get_all_function_names  get_all_function_names_with_params   get_all_function_bodies  get_all_function_docstrings  get_all_function_documentations | get_all_class_method_names  get_all_method_docstrings  get_all_method_documentations  get_all_class_method_bodies |  get_all_class_names  get_all_class_docstrings  get_all_class_documentations |
+| **Java**          |   |  get_all_class_method_names   get_all_method_names_with_params  get_all_method_bodies  get_all_method_javadocs  get_all_method_documentations |  get_all_class_names  get_all_class_javadocs  get_all_class_documentations |
+| **JavaScript**    | get_all_function_names  get_all_function_names_with_params  get_all_function_bodies  get_all_function_jsdocs  get_all_function_documentations  |  get_all_class_method_names  get_all_method_jsdocs  get_all_method_documentations |  get_all_class_names  get_all_class_jsdocs  get_all_class_documentations |
+| **C++**            | get_all_function_names  get_all_function_names_with_params  get_all_function_commentdocs  get_all_function_documentations  get_all_function_bodies  | get_all_class_method_names    |   get_all_class_names  get_all_class_commentdocs  get_all_class_documentations  |
 
  
 
