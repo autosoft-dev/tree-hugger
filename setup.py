@@ -25,7 +25,7 @@ classifiers=[
 ],
 version="0.10.1",
 packages=find_packages(exclude=("tests",)),
-install_requires=["tree-sitter", "pygit2", "pytest", "PyYAML"],
+install_requires=["tree-sitter", "pygit2", "pytest", "PyYAML", "requests"],
 entry_points = {
     'console_scripts': ['create_libs=tree_hugger.cli.create_libs:main',
                         'download_libs=tree_hugger.cli.download_libs:main'],
