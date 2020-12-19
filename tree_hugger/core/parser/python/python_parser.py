@@ -351,8 +351,8 @@ class PythonParser(BaseParser):
         all_func_doc_string = self.get_all_function_docstrings()
         all_funcs = {i:{"doc_string":[all_func_doc_string[i]],"body":[all_func_bodies[i]]} for i in self.get_all_function_names()}
         #Class related Mapping
-        all_class_bodies = self.get_all_class_docstrings()
-        all_classes = {i:{"doc_string":[all_class_bodies[i]]} for i in self.get_all_class_names()}
+        all_class_doc_strings = self.get_all_class_docstrings()
+        all_classes = {i:{"doc_string":[all_class_doc_strings[i]]} for i in self.get_all_class_names()}
         #Appending to info_dict
         self.info_dict["class"] = all_classes
         self.info_dict["functions"] = all_funcs
