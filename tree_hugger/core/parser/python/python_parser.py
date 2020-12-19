@@ -337,3 +337,24 @@ class PythonParser(BaseParser):
         Returns the docstring of all classes
         """
         return self.get_all_class_docstrings()
+    def get_info(self):
+        """
+        Returns an info_dict which would be a
+        complete information of a given  file.
+        """
+        self.info_dict = {
+            "class":[],
+            "functions":[]
+        }
+        #Function related Mapping
+        all_func_bodies = self.get_all_function_bodies()
+        all_func_doc_string = self.get_all_function_docstrings()
+        all_funcs = {i:{"doc_string":[all_func_doc_string[i]],"body":[all_func_bodies[i]]} for i in self.get_all_function_names()}
+        #Class related Mapping
+        all_class_bodies = self.get_all_class_docstrings()
+        all_classes = {i:{"doc_string":[all_class_bodies[i]]} for i in self.get_all_class_names()}
+        #Appending to info_dict
+        self.info_dict["class"] = all_classes
+        self.info_dict["functions"] = all_funcs
+
+        return self.info_dict#self.info_dict#self.info_dict["class"]
