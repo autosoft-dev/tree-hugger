@@ -84,11 +84,13 @@ _You may need to install libgit2. In case you are in mac just use `brew install 
 
 ## Setup
 
-### Getting your .so files
+### Getting the files
 
 From onwards tree-hugger 0.9 we ship a new command `download_libs`.
 
-If you are working on Debian based Linux or Newer version of MacOS then you should probably just use this command to get the library. At any point of time we will maintain a .so file for both those OSs with all the supported languages in it. 
+If you are working on Debian based Linux or Newer version of MacOS then you should probably just use this command to get the library. At any point of time we will maintain a [.so](https://en.wikipedia.org/wiki/Static_library) file for both those OSs with all the supported languages in it.
+
+If you are working on Windows then you would be getting a [.dll](https://en.wikipedia.org/wiki/Dynamic-link_library) file rather than a .so file.
 
 To get the .so file for your platform you can simply do the following 
 
@@ -108,13 +110,13 @@ optional arguments:
                         Default - my-languages.so
 ```
 
-### Building the .so files
+### Building the files
 
 _Please note that building the libraries has been tested under a macOS Mojave with Apple LLVM version 10.0.1 (clang-1001.0.46.4)_
 
 _Please check out our Linux specific instructions [here](https://github.com/autosoft-dev/tree-sitter-docker)_
 
-Once this library is installed it gives you a command line utility to download and compile tree-sitter .so files with ease. As an example - 
+Once this library is installed it gives you a command line utility to download and compile tree-sitter .so or .dll files (depending upon the OS) with ease. As an example -
 
 ```
 create_libs python

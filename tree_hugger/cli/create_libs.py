@@ -71,6 +71,9 @@ def main():
     args = parser.parse_args()
     repo_arr = []
 
+    if _which_os()=="windows":
+        args.lib_name = args.lib_name.split(".")[0] + ".dll"
+
     max_workers = len(args.langs)
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         repo_downloaders = {executor.submit(clone_repo, lang_name): lang_name for lang_name in args.langs}
