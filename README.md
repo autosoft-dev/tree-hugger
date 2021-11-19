@@ -86,6 +86,11 @@ _You may need to install libgit2. In case you are in mac just use `brew install 
 
 ### Getting your .so files
 
+### Update - 19.11.2021 - 
+
+**We are not able to support the s3 based download anymore. So the `download_libs` command does not work. We are making them available via this release - https://github.com/autosoft-dev/tree-hugger/releases/tag/0.10.1 Please download the required zip file from there.**
+
+
 From onwards tree-hugger 0.9 we ship a new command `download_libs`.
 
 If you are working on Debian based Linux or Newer version of MacOS then you should probably just use this command to get the library. At any point of time we will maintain a .so file for both those OSs with all the supported languages in it. 
