@@ -90,61 +90,10 @@ _You may need to install libgit2. In case you are in mac just use `brew install 
 
 **We are not able to support the s3 based download anymore. So the `download_libs` command does not work. We are making them available via this release - https://github.com/autosoft-dev/tree-hugger/releases/tag/0.10.1 Please download the required zip file from there.**
 
-
-From onwards tree-hugger 0.9 we ship a new command `download_libs`.
-
-If you are working on Debian based Linux or Newer version of MacOS then you should probably just use this command to get the library. At any point of time we will maintain a .so file for both those OSs with all the supported languages in it. 
-
-To get the .so file for your platform you can simply do the following 
-
-```
-download_libs
-```
-
-Here is the full usage guide of the command
-
-```
-usage: download_libs [-h] [--local_file_name LOCAL_FILE_NAME]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --local_file_name LOCAL_FILE_NAME
-                        The local file where you want to save the library.
-                        Default - my-languages.so
-```
-
-### Building the .so files
-
 _Please note that building the libraries has been tested under a macOS Mojave with Apple LLVM version 10.0.1 (clang-1001.0.46.4)_
 
-_Please check out our Linux specific instructions [here](https://github.com/autosoft-dev/tree-sitter-docker)_
-
-Once this library is installed it gives you a command line utility to download and compile tree-sitter .so files with ease. As an example - 
-
-```
-create_libs python
-```
-
-Here is the full usage guide of the command
-
-```
-usage: create_libs [-h] [-c] [-l LIB_NAME] langs [langs ...]
-
-positional arguments:
-  langs                 Give the name of languages for tree-sitter (php,
-                        python, go ...)
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -c, --copy-to-workspace
-                        Shall we copy the created libs to the present dir?
-                        (default: False)
-  -l LIB_NAME, --lib-name LIB_NAME
-                        The name of the generated .so file
-```
-
 ### Environment variables
-You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path and then the libary will use them automatically. Otherwise, as an alternative, you can pass it when creating any `Parser` object.
+You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path (the .so files you just donwloaded) and then the libary will use them automatically. Otherwise, as an alternative, you can pass it when creating any `Parser` object.
 
 
 ## Hello world example
