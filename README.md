@@ -90,7 +90,7 @@ _You may need to install libgit2. In case you are in mac just use `brew install 
 
 **We are not able to support the s3 based download anymore. So the `download_libs` command does not work. We are making them available via this release - https://github.com/autosoft-dev/tree-hugger/releases/tag/0.10.1 Please download the required zip file from there.**
 
-_Please note that building the libraries has been tested under a macOS Mojave with Apple LLVM version 10.0.1 (clang-1001.0.46.4)_
+_Please note that building the libraries has been tested under a macOS Mojave with Apple LLVM version 10.0.1 (clang-1001.0.46.4). However, they should work on all main stream Linux systems. We have not tested them on Windows._
 
 ### Environment variables
 You can set up `TS_LIB_PATH` environment variable for the tree-sitter lib path (the .so files you just donwloaded) and then the libary will use them automatically. Otherwise, as an alternative, you can pass it when creating any `Parser` object.
